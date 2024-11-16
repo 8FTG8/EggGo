@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:app_frontend/components/alert_dialog.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatelessWidget {
@@ -16,7 +17,8 @@ class LoginPage extends StatelessWidget {
               color: Colors.black, fontSize: 40, fontWeight: FontWeight.bold),
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 15,right: 15,top: 50,bottom: 20),
+          padding:
+              const EdgeInsets.only(left: 15, right: 15, top: 50, bottom: 20),
           child: TextFormField(
             decoration: InputDecoration(
                 hintText: 'Digite o seu email',
@@ -49,7 +51,9 @@ class LoginPage extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(top: 10, bottom: 15),
           child: ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).pushNamed('/homePage');
+            },
             child: Text('Entrar'),
             style: ElevatedButton.styleFrom(
                 backgroundColor: Color(0xff000C39),
@@ -57,8 +61,12 @@ class LoginPage extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: 130, vertical: 20)),
           ),
         ),
-        Text('Esqueceu a senha?',
-            style: TextStyle(decoration: TextDecoration.underline)),
+        TextButton(
+            onPressed: () {
+              showDialog(context: context, builder: (context) => ForgotPassword());
+            },
+            child: Text('Esqueceu a senha?',
+                style: TextStyle(decoration: TextDecoration.underline))),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 40),
           child: Row(

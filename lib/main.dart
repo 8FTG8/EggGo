@@ -1,4 +1,7 @@
- import 'package:app_frontend/view/login_page.dart';
+ // ignore_for_file: prefer_const_constructors
+
+ import 'package:app_frontend/view/home_page.dart';
+import 'package:app_frontend/view/login_page.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 
@@ -14,9 +17,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
+      initialRoute: '/',
+      routes: {
+        '/homePage' : (context) => HomePage()
+      },
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
+      home: const Scaffold(
         body: LoginPage()
       ),
     );
