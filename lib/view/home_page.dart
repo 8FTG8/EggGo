@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:app_frontend/components/appbar_drawer.dart';
+import 'package:app_frontend/widgets/appbar_drawer.dart';
 import 'package:app_frontend/view/boleto_page.dart';
 import 'package:app_frontend/view/cupom_fiscal_page.dart';
 import 'package:app_frontend/view/home_page_body.dart';
@@ -23,6 +23,7 @@ class _HomePageState extends State<HomePage> {
     BoletoPage(),
     CupomFiscalPage()
   ];
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -1,9 +1,7 @@
 // ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 
-//Arquivo para o Drawer da AppBar
-
+// Arquivo para o Drawer da AppBar
 class MyDrawer extends StatelessWidget {
   const MyDrawer({super.key});
 

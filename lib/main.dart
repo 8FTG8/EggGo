@@ -1,15 +1,17 @@
  // ignore_for_file: prefer_const_constructors
-
- import 'package:app_frontend/view/home_page.dart';
+import 'package:app_frontend/view/home_page.dart';
 import 'package:app_frontend/view/login_page.dart';
 import 'package:device_preview/device_preview.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(DevicePreview(
-    enabled: true,
-    builder: (context) => const MyApp())
-    );
+  runApp(
+    DevicePreview(
+      enabled: true,
+      builder: (context) => const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -18,13 +20,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(textTheme: GoogleFonts.interTextTheme()),
       initialRoute: '/',
-      routes: {
-        '/homePage' : (context) => HomePage()
-      },
+      routes: {'/homePage' : (context) => HomePage()},
       debugShowCheckedModeBanner: false,
       home: const Scaffold(
-        body: LoginPage()
+        body: LoginPage(
+        ),
       ),
     );
   }
