@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:app_frontend/widgets/product_field.dart';
+import 'package:app_frontend/view/widgets/product_field.dart';
 
 class NovaVendaPage extends StatelessWidget {
   const NovaVendaPage({super.key});

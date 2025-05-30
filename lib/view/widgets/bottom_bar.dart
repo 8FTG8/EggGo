@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../view/home/home.dart';
-import '../view/home/nota_fiscal.dart';
-import '../view/home/boleto.dart';
+import '../home/home.dart';
+import '../home/nota_fiscal.dart';
+import '../home/boleto.dart';
 
 class CustomBottomNavBar extends StatefulWidget {
   const CustomBottomNavBar({super.key});

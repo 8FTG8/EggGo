@@ -2,10 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:app_frontend/widgets/left_bar.dart';
-import 'package:app_frontend/widgets/elevated_button.dart';
-import 'package:app_frontend/widgets/card_vendas.dart';
-import 'package:app_frontend/widgets/bottom_bar.dart';
+import 'package:app_frontend/view/widgets/left_bar.dart';
+import 'package:app_frontend/view/widgets/elevated_button.dart';
+import 'package:app_frontend/view/widgets/card_vendas.dart';
+import 'package:app_frontend/view/widgets/bottom_bar.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
