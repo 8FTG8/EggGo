@@ -1,6 +1,6 @@
 //ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
-import 'package:app_frontend/widgets/bottom_bar.dart';
+import 'package:app_frontend/view/widgets/bottom_bar.dart';
 
 class BoletoPage extends StatefulWidget {
   const BoletoPage({super.key});

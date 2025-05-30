@@ -1,8 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:app_frontend/widgets/text_field_login.dart';
-import 'package:app_frontend/widgets/elevated_button.dart';
+import 'package:app_frontend/view/widgets/text_field_login.dart';
+import 'package:app_frontend/view/widgets/elevated_button.dart';
 
 class ForgotPassword extends StatelessWidget {
   const ForgotPassword({super.key});
