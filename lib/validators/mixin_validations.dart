@@ -30,7 +30,7 @@ mixin MixinValidations {
 
   // CPF \\
   String? validateCPF(String? value, [String? message]) {
-    if (value == null || value.isEmpty) return null; // CPF não obrigatório
+    if (value == null || value.isEmpty) return null;
     if (!RegExp(r'^\d{3}\.\d{3}\.\d{3}-\d{2}$').hasMatch(value)) {
       return message ?? "Insira um CPF válido!";
     }
@@ -39,7 +39,7 @@ mixin MixinValidations {
 
   // CNPJ \\
   String? validateCNPJ(String? value, [String? message]) {
-    if (value == null || value.isEmpty) return null; // CNPJ não obrigatório
+    if (value == null || value.isEmpty) return null;
     if (!RegExp(r'^\d{2}\.\d{3}\.\d{3}/\d{4}-\d{2}$').hasMatch(value)) {
       return message ?? "Insira um CNPJ válido!";
     }

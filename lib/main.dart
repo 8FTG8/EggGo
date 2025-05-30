@@ -1,12 +1,12 @@
 // ignore_for_file: prefer_const_constructors
-import 'package:app_frontend/view/home/add_venda.dart';
-import 'package:app_frontend/view/login/start.dart';
 import 'package:flutter/material.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase/firebase_options.dart';
 
+import 'view/home/add_venda.dart';
+import 'view/login/start.dart';
 import 'view/login/login.dart';
 import 'view/home/home.dart';
 import 'view/home/nota_fiscal.dart';
@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
         'NovaVendaPage'   : (context) => NovaVendaPage(),
         'NotaFiscalPage'  : (context) => NotaFiscalPage(),
         'BoletoPage'      : (context) => BoletoPage(),
-        'NovoCliente'     : (context) => NovoClientePage(),
+        'NovoClientePage' : (context) => NovoClientePage(),
       },
     );
   }

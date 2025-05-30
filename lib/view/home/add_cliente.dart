@@ -1,11 +1,33 @@
+import 'package:app_frontend/validators/mixin_validations.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class NovoClientePage extends StatelessWidget {
+class NovoClientePage extends StatefulWidget {
   const NovoClientePage({super.key});
 
-  Widget _buildCampo(String label, {int maxLines = 1}) {
+  @override
+  _NovoClientePageState createState() => _NovoClientePageState();
+}
+
+class _NovoClientePageState extends State<NovoClientePage> with MixinValidations {
+  final _formKey = GlobalKey<FormState>();
+  final _nomeController = TextEditingController();
+  final _apelidoController = TextEditingController();
+  final _telefoneController = TextEditingController();
+  final _cpfCnpjController = TextEditingController();
+
+  final _cepController = TextEditingController();
+  final _numeroController = TextEditingController();
+  final _logradouroController = TextEditingController();
+  final _bairroController = TextEditingController();
+  final _municipioController = TextEditingController();
+  final _observacoesController = TextEditingController();
+
+
+  Widget _buildCampo(String label, TextEditingController controller, {int maxLines = 1, FormFieldValidator<String>? validator}) {
     return TextFormField(
+      controller: controller,
+      validator: validator,
       maxLines: maxLines,
       decoration: InputDecoration(
         labelText: label,
@@ -18,6 +40,12 @@ class NovoClientePage extends StatelessWidget {
   }
 
   @override
+  void dispose() {
+    _nomeController.dispose();
+    _telefoneController.dispose();
+    _cpfCnpjController.dispose();
+    super.dispose();
+  }
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF0F1F5),
@@ -32,7 +60,13 @@ class NovoClientePage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const BackButton(color: Colors.black),
-              Text('Novo Cliente', style: GoogleFonts.inter(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold)),
+              Text('Novo Cliente', 
+                style: GoogleFonts.inter(
+                  color: Colors.black, 
+                  fontSize: 18, 
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               Row(
                 children: [
                   IconButton(
@@ -55,46 +89,53 @@ class NovoClientePage extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            _buildCampo('* Nome'),
-            const SizedBox(height: 12),
-            _buildCampo('Apelido'),
-            const SizedBox(height: 12),
-            _buildCampo('Telefone'),
-            const SizedBox(height: 12),
-            _buildCampo('CPF\\CNPJ'),
-            const SizedBox(height: 24),
-
-            const Divider(thickness: 1),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8),
-                child: Text('Endereço', style: GoogleFonts.inter(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.grey[700])),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              _buildCampo('* Nome', _nomeController),
+              const SizedBox(height: 12),
+              _buildCampo('Apelido', _apelidoController),
+              const SizedBox(height: 12),
+              _buildCampo('Telefone', _telefoneController),
+              const SizedBox(height: 12),
+              _buildCampo('CPF\\CNPJ', _cpfCnpjController),
+              const SizedBox(height: 24),
+          
+              const Divider(thickness: 1),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  child: Text('Endereço', 
+                    style: GoogleFonts.inter(
+                      fontWeight: FontWeight.bold, 
+                      fontSize: 16, 
+                      color: Colors.grey[700],
+                    ),
+                  ),
+                ),
               ),
-            ),
-            const Divider(thickness: 1),
-
-            Row(
-              children: [
-                Expanded(child: _buildCampo('CEP')),
-                const SizedBox(width: 8),
-                SizedBox(width: 80, child: _buildCampo('Nº')),
-              ],
-            ),
-            const SizedBox(height: 12),
-            _buildCampo('Logradouro'),
-            const SizedBox(height: 12),
-            _buildCampo('Bairro'),
-            const SizedBox(height: 12),
-            _buildCampo('Município'),
-            const SizedBox(height: 12),
-            _buildCampo('Ponto de referência'),
-            const SizedBox(height: 12),
-            _buildCampo('Observações', maxLines: 3),
-            const SizedBox(height: 20),
-          ],
+              const Divider(thickness: 1),
+          
+              Row(
+                children: [
+                  Expanded(child: _buildCampo('CEP', _cepController)),
+                  const SizedBox(width: 8),
+                  SizedBox(width: 80, child: _buildCampo('Nº', _numeroController)),
+                ],
+              ),
+              const SizedBox(height: 12),
+              _buildCampo('Logradouro', _logradouroController),
+              const SizedBox(height: 12),
+              _buildCampo('Bairro', _bairroController),
+              const SizedBox(height: 12),
+              _buildCampo('Município', _municipioController),
+              const SizedBox(height: 12),
+              _buildCampo('Observações', _observacoesController),
+              const SizedBox(height: 20),
+            ],
+          ),
         ),
       ),
     );

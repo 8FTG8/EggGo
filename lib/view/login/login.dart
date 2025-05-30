@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:app_frontend/view/widgets/text_field_login.dart';
 import 'package:app_frontend/view/widgets/elevated_button.dart';
 import 'package:app_frontend/view/login/forgot_password.dart';
@@ -96,12 +98,20 @@ class _LoginPageState extends State<LoginPage> with MixinValidations {
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       setState(() => _isLoading = true);
-                      await Future.delayed(Duration(seconds: 2));
-
+                      try {
+                        await FirebaseAuth.instance.signInWithEmailAndPassword(
+                          email: _controllerEmail.text,
+                          password: _controllerPassword.text,
+                        );
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          Navigator.pushReplacementNamed(context, 'HomePage');
+                        });
+                        } on FirebaseAuthException catch (e) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Erro de login: ${e.message}')),
+                        );
+                      }
                       setState(() => _isLoading = false);
-                      WidgetsBinding.instance.addPostFrameCallback((_) {
-                        Navigator.pushReplacementNamed(context, 'HomePage');
-                      });
                     }
                   },
                 ),
