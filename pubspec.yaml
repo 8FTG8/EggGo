@@ -1,5 +1,5 @@
 name: app_frontend
-description: "A new Flutter project."
+description: "Projeto para Quero Ovo Express ltda."
 publish_to: 'none'
 version: 0.1.0
 
@@ -11,11 +11,14 @@ dependencies:
     sdk: flutter
   device_preview: ^1.2.0
   google_fonts: ^6.2.1
+  firebase_core: ^3.10.0
+  cloud_firestore: ^5.6.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^4.0.0
+  firebase_auth: ^5.4.0
 
 flutter:
   uses-material-design: true
