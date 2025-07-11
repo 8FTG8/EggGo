@@ -1,17 +1,21 @@
-// ignore_for_file: prefer_const_constructors
+import 'package:egg_go/services/vendas_model.dart';
 import 'package:flutter/material.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
 import 'firebase/firebase_options.dart';
+import 'firebase/auth_checker.dart';
 
-import 'view/home/add_venda.dart';
-import 'view/login/start.dart';
-import 'view/login/login.dart';
-import 'view/home/home.dart';
-import 'view/home/nota_fiscal.dart';
-import 'view/home/boleto.dart';
-import 'view/home/add_cliente.dart';
+import 'views/nota_fiscal.dart';
+import 'views/novo_cliente.dart';
+import 'views/nova_venda.dart';
+import 'views/home.dart';
+
+import 'views/login.dart';
+
+import 'views/settings.dart';
+import 'views/lista_produtos.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,7 +23,12 @@ void main() async {
   runApp(
     DevicePreview(
       enabled: true,
-      builder: (context) => const MyApp(),
+      builder: (context) => MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (_) => VendasModel()),
+        ],
+        child: const MyApp(),
+      ),
     ),
   );
 }
@@ -30,19 +39,18 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      home: AuthChecker(),
       debugShowCheckedModeBanner: false,
       theme: ThemeData(textTheme: GoogleFonts.interTextTheme()),
-      initialRoute: 'StartPage',
       routes: {
-        'StartPage'       : (context) => StartPage(),
         'LoginPage'       : (context) => LoginPage(),
         'HomePage'        : (context) => HomePage(),
+        'SettingsPage'    : (context) => SettingsPage(),
         'NovaVendaPage'   : (context) => NovaVendaPage(),
         'NotaFiscalPage'  : (context) => NotaFiscalPage(),
-        'BoletoPage'      : (context) => BoletoPage(),
         'NovoClientePage' : (context) => NovoClientePage(),
+        'ProdutosPage'    : (context) => ProdutosPage(),
       },
     );
   }
 }
-

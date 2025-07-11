@@ -1,8 +1,9 @@
 // ignore_for_file: prefer_const_constructors
+import 'package:egg_go/utilis/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:app_frontend/view/widgets/text_field_login.dart';
-import 'package:app_frontend/view/widgets/elevated_button.dart';
+import 'package:egg_go/widgets/text_button.dart';
+import 'package:egg_go/widgets/elevated_button.dart';
 
 class ForgotPassword extends StatelessWidget {
   const ForgotPassword({super.key});
@@ -50,7 +51,8 @@ class ForgotPassword extends StatelessWidget {
             SizedBox(height: 12),
             CustomElevatedButton(
               onPressed: () {},
-              height: 36,
+              height: 40,
+              foregroundColor: AppColors.primary,
               child: Text('Enviar email',
                 style: GoogleFonts.inter(
                   fontSize: 14, 

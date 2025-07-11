@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
+import 'package:egg_go/utilis/app_colors.dart';
 
 class CustomElevatedButton extends StatelessWidget {
   final double height;
@@ -11,7 +12,6 @@ class CustomElevatedButton extends StatelessWidget {
   final IconData? icon;
   final double? iconSize;
   final Color? iconColor;
-  final Color? shadowColor;
   final double elevation;
   final EdgeInsetsGeometry? padding;
   final MainAxisAlignment mainAxisAlignment;
@@ -30,8 +30,7 @@ class CustomElevatedButton extends StatelessWidget {
     this.icon,
     this.iconSize,
     this.iconColor,
-    this.shadowColor,
-    this.elevation = 4.0,
+    this.elevation = 2.0,
     this.padding,
     this.mainAxisAlignment = MainAxisAlignment.center,
     this.isLoading = false,
@@ -44,16 +43,16 @@ class CustomElevatedButton extends StatelessWidget {
       width: double.infinity,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: backgroundColor ?? Color(0xff000C39),
-          foregroundColor: foregroundColor ?? Color(0xffFDB014),
-          shadowColor: shadowColor,
-          elevation: elevation,
+          padding: padding ?? EdgeInsets.symmetric(horizontal: 16.0),
+          backgroundColor: backgroundColor ??  Colors.white,
+          foregroundColor: foregroundColor ?? AppColors.black,
           shape: RoundedRectangleBorder(
             borderRadius: borderRadius ?? BorderRadius.circular(100),
             side: border ?? BorderSide.none,
           ),
-          padding: padding ?? EdgeInsets.symmetric(horizontal: 12),
         ),
+
+        // Ícone de carregamento \\
         onPressed: isLoading ? null : onPressed,
         child: isLoading
           ? Center(
@@ -63,11 +62,13 @@ class CustomElevatedButton extends StatelessWidget {
               child: CircularProgressIndicator(
                 strokeWidth: 2.5,
                 valueColor: AlwaysStoppedAnimation<Color>(
-                  foregroundColor ?? Color(0xffFDB014),
+                  foregroundColor ?? AppColors.primary,
                 ),
               ),
             ),
           )
+        
+        // Ícone personalizável \\
         : Row(
           mainAxisAlignment: mainAxisAlignment,
           mainAxisSize: MainAxisSize.max,
@@ -76,7 +77,7 @@ class CustomElevatedButton extends StatelessWidget {
               Icon(
                 icon,
                 size: iconSize ?? 24.0,
-                color: iconColor ?? foregroundColor ?? Color(0xffFDB014),
+                color: iconColor ?? foregroundColor ?? AppColors.black,
               ),
             if (icon != null) SizedBox(width: 8),
             Flexible(child: child),
@@ -86,4 +87,3 @@ class CustomElevatedButton extends StatelessWidget {
     );
   }
 }
-

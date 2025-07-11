@@ -1,10 +1,12 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
+import 'package:egg_go/utilis/app_colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CustomTextField extends StatelessWidget {
-  final String hintText;
-  final String titleText;
+  final String? hintText;
+  final String? titleText;
+  final Color? backgroundColor;
   final TextEditingController? controller;
   final String? Function(String?)? validator;
   final TextInputType keyboardType;
@@ -14,8 +16,9 @@ class CustomTextField extends StatelessWidget {
 
   const CustomTextField({
     super.key,
-    required this.hintText,
-    required this.titleText,
+    this.hintText,
+    this.titleText,
+    this.backgroundColor,
     this.controller,
     this.validator,
     this.keyboardType = TextInputType.text,
@@ -32,7 +35,7 @@ class CustomTextField extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12.0),
           child: Text(
-            titleText, 
+            titleText ?? '', 
             style: GoogleFonts.inter(
               fontSize: 14,
               fontWeight: FontWeight.w600,
@@ -46,21 +49,23 @@ class CustomTextField extends StatelessWidget {
           obscureText: isPassword,
           validator: validator,
           decoration: InputDecoration(
+            filled: true,
+            fillColor: backgroundColor ?? Colors.white,
             hintText: hintText,
             suffixIcon: suffixIcon,
-            contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 18),
+            contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
             enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(100),
               borderSide: BorderSide(
-                color: Color(0xFFFDB014),
-                width: 2.0,
+                color: AppColors.primary,
+                width: 1.0,
               ),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
               borderSide: BorderSide(
-                color: Color(0xff000C39),
-                width: 1.5,
+                color: AppColors.secondary,
+                width: 1.0,
               ),
             ),
           ),
