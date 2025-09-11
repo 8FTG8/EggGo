@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
-import 'package:egg_go/utilis/app_colors.dart';
+import 'package:egg_go/core/constants/app_colors.dart';
 
 class CustomElevatedButton extends StatelessWidget {
   final double height;

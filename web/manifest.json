@@ -1,6 +1,6 @@
 {
-    "name": "app_frontend",
-    "short_name": "app_frontend",
+    "name": "egg_go",
+    "short_name": "egg_go",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

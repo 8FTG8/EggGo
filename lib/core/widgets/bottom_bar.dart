@@ -1,4 +1,4 @@
-import 'package:egg_go/utilis/app_colors.dart';
+import 'package:egg_go/core/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 

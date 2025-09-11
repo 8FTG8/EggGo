@@ -1,8 +1,8 @@
+import 'package:egg_go/controllers/venda_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:egg_go/utilis/app_colors.dart';
-import 'package:egg_go/services/vendas_model.dart';
+import 'package:egg_go/core/constants/app_colors.dart';
 
 class CardVendas extends StatefulWidget {
   const CardVendas({super.key});
@@ -54,11 +54,6 @@ class _CardVendasState extends State<CardVendas> {
 
   @override
   Widget build(BuildContext context) {
-    final vendasModel = Provider.of<VendasModel>(context);
-    final periodo = _getPeriodoSelecionado();
-    final totalVendas = vendasModel.getTotalVendas(periodo);
-    final valorTotal = vendasModel.getValorTotal(periodo);
-
     return Card(
       elevation: 2.0,
       color: Colors.white,
@@ -80,11 +75,14 @@ class _CardVendasState extends State<CardVendas> {
 
                   // FILTRO DE DATA \\
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                     decoration: BoxDecoration(
                       color: Colors.transparent,
                       borderRadius: BorderRadius.circular(6),
-                      border: isSelected ? Border.all(color: AppColors.primary) : Border.all(color: AppColors.black),
+                      border: isSelected
+                        ? Border.all(color: AppColors.primary)
+                        : Border.all(color: AppColors.black),
                     ),
                     child: Text(
                       filtros[index],
@@ -99,41 +97,55 @@ class _CardVendasState extends State<CardVendas> {
               }),
             ),
 
-            // VENDAS REALIZADAS \\
-            const SizedBox(height: 8),
-            Text('Vendas realizadas: $vendasModel.totalVendas',
-              style: GoogleFonts.inter(
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            
-            // VALOR TOTAL \\
-            const SizedBox(height: 4),
-            Text('R\$ ${_isVisible ? valorTotal.toStringAsFixed(2).replaceAll('.', ',') : '••••••'}',
-              style: GoogleFonts.inter(
-                fontSize: 22,
-                fontWeight: FontWeight.w800,
-              ),
-            ),
-
-            // BOTÃO DE VISIBILLIDADE \\
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                IconButton(
-                  icon: Icon(
-                    _isVisible ? Icons.visibility_outlined : Icons.visibility_off_outlined,
-                    size: 24,
+            Consumer<VendaController>(builder: (context, controller, child) {
+              final periodo = _getPeriodoSelecionado();
+              final totalVendas = controller.getTotalVendas(periodo);
+              final valorTotal = controller.getValorTotal(periodo);
+              return Column(
+                children: [
+                  
+                  // VENDAS REALIZADAS \\
+                  const SizedBox(height: 8),
+                  Text(
+                    'Vendas realizadas: $totalVendas',
+                    style: GoogleFonts.inter(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
-                  onPressed: () {
-                    setState(() {
-                      _isVisible = !_isVisible;
-                    });
-                  },
-                ),
-              ],
-            ),
+
+                  // VALOR TOTAL \\
+                  const SizedBox(height: 4),
+                  Text(
+                    'R\$ ${_isVisible ? valorTotal.toStringAsFixed(2).replaceAll('.', ',') : '••••••'}',
+                    style: GoogleFonts.inter(
+                      fontSize: 22,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+
+                  // BOTÃO DE VISIBILLIDADE \\
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      IconButton(
+                        icon: Icon(
+                          _isVisible
+                              ? Icons.visibility_outlined
+                              : Icons.visibility_off_outlined,
+                          size: 24,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _isVisible = !_isVisible;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              );
+            }),
           ],
         ),
       ),

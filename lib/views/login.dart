@@ -1,23 +1,24 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
-import 'package:egg_go/utilis/app_colors.dart';
+import 'package:egg_go/core/constants/app_colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:egg_go/widgets/text_button.dart';
-import 'package:egg_go/widgets/elevated_button.dart';
-import 'package:egg_go/views/forgot_password.dart';
-import 'package:egg_go/validators/mixin_validations.dart';
+import 'package:egg_go/core/widgets/button_text.dart';
+import 'package:egg_go/core/widgets/button_elevated.dart';
+import 'package:egg_go/views/login_recovery.dart';
+import 'package:egg_go/core/utils/validators.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class Login extends StatefulWidget {
+  static const routeName = 'LoginPage';
+  const Login({super.key});
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _LoginState createState() => _LoginState();
 }
 
-class _LoginPageState extends State<LoginPage> with MixinValidations {
+class _LoginState extends State<Login> with MixinValidations {
   final _formKey = GlobalKey<FormState>();
   final _controllerEmail = TextEditingController();
   final _controllerPassword = TextEditingController();
@@ -43,7 +44,6 @@ class _LoginPageState extends State<LoginPage> with MixinValidations {
         );
         final prefs = await SharedPreferences.getInstance();
         await prefs.setBool('usuario_logado', true);
-        // AuthChecker cuidará da navegação
       } on FirebaseAuthException catch (e) {
         String errorMessage = 'Erro de login. Tente novamente.';
         switch (e.code) {
@@ -180,31 +180,19 @@ class _LoginPageState extends State<LoginPage> with MixinValidations {
                       children: [
                         TextSpan(
                           text: 'Ao continuar, você concorda com nossos ',
-                          style: GoogleFonts.inter(
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black45,
-                          ),
+                          style: GoogleFonts.inter(fontWeight: FontWeight.w500, color: Colors.black45),
                         ),
                         TextSpan(
                           text: 'Termos e Condições',
-                          style: GoogleFonts.inter(
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.secondary,
-                          ),
+                          style: GoogleFonts.inter(fontWeight: FontWeight.w600, color: AppColors.secondary),
                         ),
                         TextSpan(
                           text: ' e com nossa ',
-                          style: GoogleFonts.inter(
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black45,
-                          ),
+                          style: GoogleFonts.inter(fontWeight: FontWeight.w500, color: Colors.black45),
                         ),
                         TextSpan(
                           text: 'Política de Privacidade.',
-                          style: GoogleFonts.inter(
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.secondary,
-                          ),
+                          style: GoogleFonts.inter(fontWeight: FontWeight.w600, color: AppColors.secondary),
                         ),
                       ],
                     ),

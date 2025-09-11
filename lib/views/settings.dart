@@ -2,19 +2,20 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'package:egg_go/widgets/header.dart';
-import 'package:egg_go/utilis/app_colors.dart';
-import 'package:egg_go/widgets/elevated_button.dart';
+import 'package:egg_go/core/widgets/header.dart';
+import 'package:egg_go/core/constants/app_colors.dart';
+import 'package:egg_go/core/widgets/button_elevated.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SettingsPage extends StatefulWidget {
-  const SettingsPage({super.key});
+class Settings extends StatefulWidget {
+  static const routeName = 'SettingsPage';
+  const Settings({super.key});
 
   @override
-  State<SettingsPage> createState() => _SettingsPageState();
+  State<Settings> createState() => _SettingsState();
 }
 
-class _SettingsPageState extends State<SettingsPage> {
+class _SettingsState extends State<Settings> {
   void logout() async {
     await FirebaseAuth.instance.signOut();
     final prefs = await SharedPreferences.getInstance();
@@ -84,7 +85,9 @@ class _SettingsPageState extends State<SettingsPage> {
                 fontWeight: FontWeight.w600,
               ),
             ), 
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(context, 'SincronizacaoPage');
+            },
           ),
 
           SizedBox(height: 16),

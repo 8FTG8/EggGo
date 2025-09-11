@@ -1,9 +1,9 @@
 // ignore_for_file: prefer_const_constructors
-import 'package:egg_go/utilis/app_colors.dart';
+import 'package:egg_go/core/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:egg_go/widgets/text_button.dart';
-import 'package:egg_go/widgets/elevated_button.dart';
+import 'package:egg_go/core/widgets/button_text.dart';
+import 'package:egg_go/core/widgets/button_elevated.dart';
 
 class ForgotPassword extends StatelessWidget {
   const ForgotPassword({super.key});

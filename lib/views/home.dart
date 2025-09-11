@@ -1,28 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:egg_go/utilis/app_colors.dart';
+import 'package:egg_go/core/constants/app_colors.dart';
+import 'package:egg_go/views/cliente.dart';
 import 'package:egg_go/views/settings.dart';
-import 'package:egg_go/views/nova_venda.dart';
-import 'package:egg_go/widgets/elevated_button.dart';
+import 'package:egg_go/views/venda_add.dart';
+import 'package:egg_go/core/widgets/button_elevated.dart';
 import 'package:egg_go/views/card_vendas.dart';
-import 'package:egg_go/widgets/bottom_bar.dart';
+import 'package:egg_go/core/widgets/bottom_bar.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class Home extends StatefulWidget {
+  static const routeName = 'HomePage';
+  const Home({super.key});
   
   @override
-  _HomePageState createState() => _HomePageState();
+  _HomeState createState() => _HomeState();
 }
 
-class _HomePageState extends State<HomePage> {
-
+class _HomeState extends State<Home> {
   int _selectedIndex = 1;
-
   static final List<Widget> _widgetOptions = <Widget>[
-    // Aqui é configurado a ordem das telas
-    SettingsPage(),
+    Settings(),
     _HomePageContent(),
-    NovaVendaPage(),
+    NovaVenda(),
   ];
 
   void _onItemTapped(int index) {
@@ -38,10 +37,10 @@ class _HomePageState extends State<HomePage> {
       // HEADER \\
       appBar: _selectedIndex == 1 ? AppBar(
         backgroundColor: Colors.white,
-        leadingWidth: 138, // Width (120) + padding esquerdo (18)
+        leadingWidth: 138,
         leading: Padding(
           padding: const EdgeInsets.only(left: 18.0),
-          child: Image.asset('assets/images/logo.png', width: 120),
+          child: Image.asset('lib/core/images/logo.png', width: 120),
         ),
       ) : null,
 
@@ -60,7 +59,7 @@ class _HomePageState extends State<HomePage> {
 }
 
 class _HomePageContent extends StatelessWidget {
-  const _HomePageContent({Key? key});
+  const _HomePageContent();
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +86,7 @@ class _HomePageContent extends StatelessWidget {
               ),
             ), 
             onPressed: () {
-              Navigator.pushNamed(context, 'NovoClientePage');
+              Navigator.pushNamed(context, Clientes.routeName);
             },
           ),
 
@@ -106,6 +105,24 @@ class _HomePageContent extends StatelessWidget {
             ), 
             onPressed: () {
               print('Botão Histórico de Venda pressionado');
+            },
+          ),
+
+          // RELATÓRIOS \\
+          SizedBox(height: 12),
+          CustomElevatedButton(
+            height: 50,
+            borderRadius: BorderRadius.circular(10),
+            mainAxisAlignment: MainAxisAlignment.start,
+            icon: Icons.analytics_rounded,
+            child: Text('Relatórios',
+              style: GoogleFonts.inter(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+              ),
+            ), 
+            onPressed: () {
+              print('Botão Relatórios pressionado');
             },
           ),
         ],

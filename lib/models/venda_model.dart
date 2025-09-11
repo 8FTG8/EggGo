@@ -1,9 +1,10 @@
-class Produto {
+// Representa um item dentro de uma venda, com nome, quantidade e preço específicos para essa transação.
+class ItemVendido {
   final String nome;
   final int quantidade;
   final double precoUnitario;
 
-  Produto({
+  const ItemVendido({
     required this.nome,
     required this.quantidade,
     required this.precoUnitario,
@@ -12,7 +13,7 @@ class Produto {
 
 class Venda {
   final String cliente;
-  final List<Produto> produtos;
+  final List<ItemVendido> produtos;
   final double total;
   final DateTime data;
 

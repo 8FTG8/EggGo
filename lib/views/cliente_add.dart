@@ -1,25 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
-import '../validators/mixin_validations.dart';
+import '../controllers/cliente_controller.dart';
+import '../models/cliente_model.dart';
+import '../core/utils/validators.dart';
+import '../core/constants/app_colors.dart';
+import '../core/widgets/header.dart';
 
-import 'package:egg_go/utilis/app_colors.dart';
-import 'package:egg_go/widgets/header.dart';
-
-class NovoClientePage extends StatefulWidget {
-  const NovoClientePage({super.key});
+class NovoCliente extends StatefulWidget {
+  static const routeName = 'NovoClientePage';
+  const NovoCliente({super.key});
 
   @override
-  _NovoClientePageState createState() => _NovoClientePageState();
+  _NovoClienteState createState() => _NovoClienteState();
 }
 
-class _NovoClientePageState extends State<NovoClientePage> with MixinValidations {
+class _NovoClienteState extends State<NovoCliente> with MixinValidations {
+  bool _isLoading = false;
   final _formKey = GlobalKey<FormState>();
   final _nomeController = TextEditingController();
   final _apelidoController = TextEditingController();
   final _telefoneController = TextEditingController();
   final _cpfCnpjController = TextEditingController();
-
   final _cepController = TextEditingController();
   final _numeroController = TextEditingController();
   final _logradouroController = TextEditingController();
@@ -27,16 +30,49 @@ class _NovoClientePageState extends State<NovoClientePage> with MixinValidations
   final _municipioController = TextEditingController();
   final _observacoesController = TextEditingController();
 
-  // TODO: Implementar a lógica para salvar o cliente no Firebase
-  void _salvarCliente() {
-    if (_formKey.currentState!.validate()) {
-      // Lógica para obter os dados dos controllers e salvar no Firebase
-      print('Formulário válido. Salvando cliente...');
-      // Exemplo: String nome = _nomeController.text;
+  void _salvarCliente() async {
+    if (!(_formKey.currentState?.validate() ?? false)) {
+      return;
+    }
+      setState(() => _isLoading = true);
+
+      final scaffoldMessenger = ScaffoldMessenger.of(context);
+      final navigator = Navigator.of(context);
+      final cliente = Cliente(
+        nome: _nomeController.text.trim(),
+        apelido: _apelidoController.text.nullIfEmpty,
+        telefone: _telefoneController.text.nullIfEmpty,
+        cpfCnpj: _cpfCnpjController.text.nullIfEmpty,
+        cep: _cepController.text.nullIfEmpty,
+        numero: _numeroController.text.nullIfEmpty,
+        logradouro: _logradouroController.text.nullIfEmpty,
+        bairro: _bairroController.text.nullIfEmpty,
+        municipio: _municipioController.text.nullIfEmpty,
+        observacoes: _observacoesController.text.nullIfEmpty,
+      );
+
+      try {
+        await Provider.of<ClienteController>(context, listen: false)
+            .adicionarCliente(cliente);
+        if (mounted) {
+          scaffoldMessenger.showSnackBar(
+            const SnackBar(content: Text('Cliente salvo com sucesso!')),
+          );
+          navigator.pop();
+        }
+      } catch (e) {
+        if (mounted) {
+          scaffoldMessenger.showSnackBar(
+            SnackBar(content: Text('Erro ao salvar cliente: $e')),
+          );
+        }
+      } finally {
+        if (mounted) {
+          setState(() => _isLoading = false);
+      }
     }
   }
-
-
+  
   Widget _buildCampo(String label, TextEditingController controller, {int maxLines = 1, FormFieldValidator<String>? validator}) {
     return TextFormField(
       controller: controller,
@@ -58,7 +94,6 @@ class _NovoClientePageState extends State<NovoClientePage> with MixinValidations
     _apelidoController.dispose();
     _telefoneController.dispose();
     _cpfCnpjController.dispose();
-
     _cepController.dispose();
     _numeroController.dispose();
     _logradouroController.dispose();
@@ -72,8 +107,7 @@ class _NovoClientePageState extends State<NovoClientePage> with MixinValidations
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: const CustomHeader(pageTitle: 'Novo Cliente'),
-
+      appBar: const CustomHeader(pageTitle: 'Cadastrar Cliente', showBackButton: true),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Form(
@@ -82,24 +116,25 @@ class _NovoClientePageState extends State<NovoClientePage> with MixinValidations
             children: [
               _buildCampo('* Nome', _nomeController, validator: (value) => isEmpty(value, 'Este campo é obrigatório!')),
               const SizedBox(height: 12),
+
               _buildCampo('Apelido', _apelidoController),
               const SizedBox(height: 12),
+
               _buildCampo('Telefone', _telefoneController, validator: (value) {
-                // TODO: Criar uma validação mais robusta para telefone no MixinValidations
-                // Exemplo simples:
-                // if (value != null && value.isNotEmpty && value.length < 10) {
-                //   return 'Telefone inválido';
-                // }
-                return null; // Por enquanto, sem validação específica
+                if (value != null && value.isNotEmpty) {
+                  final cleaned = value.replaceAll(RegExp(r'[^0-9]'), '');
+                  if (cleaned.length < 10 || cleaned.length > 11) {
+                    return 'Telefone inválido. Use (DD) XXXXX-XXXX';
+                  }
+                }
+                return null;
               }),
               const SizedBox(height: 12),
               _buildCampo('CPF\\CNPJ', _cpfCnpjController, validator: (value) {
-                // TODO: Melhorar esta lógica para diferenciar CPF e CNPJ ou usar um validador combinado
                 if (value == null || value.isEmpty) return null; // Se for opcional
-                final isCpf = value.replaceAll(RegExp(r'[^0-9]'), '').length == 11;
-                final isCnpj = value.replaceAll(RegExp(r'[^0-9]'), '').length == 14;
-                if (isCpf) return validateCPF(value);
-                if (isCnpj) return validateCNPJ(value);
+                final digitsOnly = value.replaceAll(RegExp(r'[^0-9]'), '');
+                if (digitsOnly.length == 11) return validateCPF(value);
+                if (digitsOnly.length == 14) return validateCNPJ(value);
                 return 'CPF ou CNPJ inválido';
               }),
 
@@ -117,8 +152,8 @@ class _NovoClientePageState extends State<NovoClientePage> with MixinValidations
                   ),
                 ),
               ),
+              
               const Divider(thickness: 1),
-          
               Row(
                 children: [
                   Expanded(child: _buildCampo('CEP', _cepController)),
@@ -133,15 +168,24 @@ class _NovoClientePageState extends State<NovoClientePage> with MixinValidations
               const SizedBox(height: 12),
               _buildCampo('Município', _municipioController),
               const SizedBox(height: 12),
-              _buildCampo('Observações', _observacoesController),
+              _buildCampo('Observações', _observacoesController, maxLines: 5),
               const SizedBox(height: 30),
               ElevatedButton(
-                onPressed: _salvarCliente,
+                onPressed: _isLoading ? null : _salvarCliente,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primary,
                   padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
                 ),
-                child: Text('Salvar Cliente', style: GoogleFonts.inter(fontSize: 16, color: Colors.white)),
+                child: _isLoading
+                    ? const SizedBox(
+                        height: 24,
+                        width: 24,
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                          strokeWidth: 3,
+                        ),
+                      )
+                    : Text('Salvar Cliente', style: GoogleFonts.inter(fontSize: 16, color: Colors.white)),
               ),
               const SizedBox(height: 20),
             ],
@@ -150,5 +194,8 @@ class _NovoClientePageState extends State<NovoClientePage> with MixinValidations
       ),
     );
   }
+}
 
+extension on String {
+  get nullIfEmpty => null;
 }

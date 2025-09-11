@@ -4,11 +4,13 @@ import 'package:google_fonts/google_fonts.dart';
 class CustomHeader extends StatelessWidget implements PreferredSizeWidget {
   final String pageTitle;
   final bool showBackButton;
+  final List<Widget>? actions;
 
   const CustomHeader({
     super.key,
     required this.pageTitle,
     this.showBackButton = true,
+    this.actions,
   });
 
   @override
@@ -18,6 +20,7 @@ class CustomHeader extends StatelessWidget implements PreferredSizeWidget {
       titleSpacing: 0.0,
       automaticallyImplyLeading: false,
       backgroundColor: Colors.white70,
+      actions: actions,
       title: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.stretch,
