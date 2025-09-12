@@ -73,7 +73,7 @@ class Sincronizacao extends StatelessWidget {
         // Constrói a lista de tarefas de sincronização
         ...controller.taskStatus.entries.map((entry) {
           return _buildTaskItem(entry.key, entry.value);
-        }).toList(),
+        }),
       ],
     );
   }
