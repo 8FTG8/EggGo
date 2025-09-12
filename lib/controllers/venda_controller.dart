@@ -44,8 +44,4 @@ class VendaController with ChangeNotifier {
     return _getVendasNoPeriodo(periodo).fold(0.0, (sum, v) => sum + v.total);
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
 }

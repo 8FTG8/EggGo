@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+
 import '../core/constants/app_colors.dart';
 import '../core/widgets/header.dart';
-import '../core/widgets/card_produto.dart';
+
+import '../views/venda_produto_card.dart';
+
+import '../controllers/produto_controller.dart';
 import '../controllers/venda_controller.dart';
+
 import '../models/venda_model.dart';
 
 class NovaVenda extends StatefulWidget {
@@ -37,26 +42,24 @@ class _NovaVendaState extends State<NovaVenda> {
   void _finalizarVenda() async {
     if (!_formKey.currentState!.validate()) return;
 
-    final produtosValidos = _produtos.where((p) => p.valido).toList();
-    if (produtosValidos.isEmpty) {
+    final itensVendidos = _produtos.where((p) => p.valido).map((p) => ItemVendido(
+      nome: p.produto!.nome,
+      quantidade: p.quantidade,
+      precoUnitario: p.precoUnitario,
+    )).toList();
+
+    if (itensVendidos.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Adicione pelo menos um produto válido'),
+          content: Text('Adicione pelo menos um produto válido!'),
         ),
       );
-
       return;
     }
 
     final venda = Venda(
       cliente: _clienteController.text.trim(),
-      // Mapeia os formulários de produto para o modelo ItemVendido.
-      // Assumindo que 'p' (um objeto ProdutoForm) tem os campos nome, quantidade e precoUnitario.
-      produtos: produtosValidos.map((p) => ItemVendido(
-        nome: p.nome,
-        quantidade: p.quantidade,
-        precoUnitario: p.precoUnitario,
-      )).toList(),
+      produtos: itensVendidos,
       total: _calcularTotal(),
       data: DateTime.now(),
     );
@@ -76,6 +79,7 @@ class _NovaVendaState extends State<NovaVenda> {
     _formKey.currentState?.reset();
     _clienteController.clear();
     setState(() {
+      _pagamentoSelecionado = null;
       _produtos.clear();
       _adicionarProduto();
     });
@@ -119,6 +123,8 @@ class _NovaVendaState extends State<NovaVenda> {
 
   @override
   Widget build(BuildContext context) {
+    final allProducts = Provider.of<ProdutoController>(context, listen: false).produtos;
+
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: const CustomHeader(pageTitle: 'Nova Venda', showBackButton: false),
@@ -138,7 +144,7 @@ class _NovaVendaState extends State<NovaVenda> {
             
             const SizedBox(height: 8),
             DropdownButtonFormField<String>(
-              value: _pagamentoSelecionado,
+              initialValue: _pagamentoSelecionado,
               decoration: _buildInputDecoration('* Método de pagamento'),
               items: _pagamento.map((String cor) {
                 return DropdownMenuItem<String>(
@@ -157,20 +163,21 @@ class _NovaVendaState extends State<NovaVenda> {
             const SizedBox(height: 8),
             ...List.generate(
               _produtos.length,
-              (index) => ProdutoCard(
-                produto: _produtos[index],
-                index: index,
-                onRemoved: () => _removerProduto(index),
-                onNomeChanged: (value) => setState(() {
-                  _produtos[index].nome = value.trim();
-                }),
-                onQuantidadeChanged: (value) => setState(() {
-                  _produtos[index].quantidade = int.tryParse(value) ?? 0;
-                }),
-                onPrecoChanged: (value) => setState(() {
-                  _produtos[index].precoUnitario = double.tryParse(value.replaceAll(',', '.')) ?? 0.0;
-                }),
-              ),
+              (index) {
+                return ProdutoCard(
+                  key: ValueKey(_produtos[index]),
+                  index: index,
+                  produtoForm: _produtos[index],
+                  allProducts: allProducts,
+                  onRemoved: () => _removerProduto(index),
+                  onChanged: (updatedForm) {
+                    // O card notifica a tela sobre qualquer mudança
+                    setState(() {
+                      _produtos[index] = updatedForm;
+                    });
+                  },
+                );
+              },
             ),
 
             const SizedBox(height: 8),
