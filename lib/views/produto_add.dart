@@ -1,12 +1,16 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import '../core/constants/app_colors.dart';
-import '../controllers/produto_controller.dart';
-import '../models/produto_model.dart';
 import '../core/widgets/header.dart';
+
+import '../controllers/produto_controller.dart';
+
+import '../models/produto_model.dart';
+
 import '../services/produto_service.dart';
 
 class NovoProduto extends StatefulWidget {
@@ -94,9 +98,19 @@ class _NovoProdutoState extends State<NovoProduto> {
           SnackBar(content: Text(e.message)),
         );
       }
+    } on FirebaseException catch (e) {
+      if (mounted) {
+        String errorMessage = 'Ocorreu um erro ao salvar no Firebase: ${e.message}';
+        if (e.code == 'permission-denied') {
+          errorMessage = 'Erro de permissão. Verifique as Regras de Segurança do Firestore no console do Firebase.';
+        }
+        scaffoldMessenger.showSnackBar(SnackBar(content: Text(errorMessage)));
+      }
     } catch (e) {
       if (mounted) {
-        scaffoldMessenger.showSnackBar(SnackBar(content: Text('Ocorreu um erro ao salvar: $e')));
+        scaffoldMessenger.showSnackBar(
+          SnackBar(content: Text('Ocorreu um erro inesperado ao salvar: $e')),
+        );
       }
     } finally {
       if (mounted) {
@@ -119,7 +133,7 @@ class _NovoProdutoState extends State<NovoProduto> {
     required ValueChanged<String?> onChanged,
   }) {
     return DropdownButtonFormField<String>(
-      value: value,
+      initialValue: value,
       decoration: InputDecoration(
         labelText: label,
         border: const OutlineInputBorder(),

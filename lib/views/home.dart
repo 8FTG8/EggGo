@@ -5,7 +5,7 @@ import 'package:egg_go/views/cliente.dart';
 import 'package:egg_go/views/settings.dart';
 import 'package:egg_go/views/venda_add.dart';
 import 'package:egg_go/core/widgets/button_elevated.dart';
-import 'package:egg_go/views/card_vendas.dart';
+import 'package:egg_go/views/venda_resumo_card.dart';
 import 'package:egg_go/core/widgets/bottom_bar.dart';
 
 class Home extends StatefulWidget {

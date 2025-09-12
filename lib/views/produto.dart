@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import '../core/constants/app_colors.dart';
 import '../core/widgets/header.dart';
 import '../views/produto_add.dart';
-//import '../views/sincronizacao.dart';
 import '../controllers/produto_controller.dart';
 import '../models/produto_model.dart';
 
@@ -31,10 +30,7 @@ class Produtos extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: CustomHeader(
-        pageTitle: 'Produtos Cadastrados',
-        showBackButton: true,
-      ),
+      appBar: CustomHeader(pageTitle: 'Produtos Cadastrados', showBackButton: true),
       body: Consumer<ProdutoController>(
         builder: (context, controller, child) {
           if (controller.isLoading && controller.produtos.isEmpty) {
@@ -73,52 +69,91 @@ class Produtos extends StatelessWidget {
                     ],
                   ),
                 ),
+
+                // Lista de produtos cadastrados
                 const SizedBox(height: 8),
                 Expanded(
                   child: ListView.builder(
                     itemCount: controller.produtos.length,
                     itemBuilder: (context, index) {
                       final produto = controller.produtos[index];
-                      return Container(
-                        margin: const EdgeInsets.symmetric(vertical: 4),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(4),
-                          border: Border.all(
-                            color: _getBorderColor(produto),
-                            width: 1.5,
+                      return Dismissible(
+                        key: ValueKey(produto.id!),
+                        direction: DismissDirection.endToStart,
+                        background: Container(
+                          color: AppColors.primary,
+                          margin: const EdgeInsets.symmetric(vertical: 4),
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          alignment: Alignment.centerRight,
+                          child: const Icon(Icons.delete, color: Colors.white)),
+                        confirmDismiss: (direction) async {
+                          return await showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text("Confirmar Exclusão"),
+                                content: Text("Tem certeza que deseja excluir o produto \"${produto.nome}\"?"),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () => Navigator.of(context).pop(false),
+                                    child: const Text("Cancelar"),
+                                  ),
+                                  TextButton(
+                                    style: TextButton.styleFrom(foregroundColor: Colors.red),
+                                    onPressed: () => Navigator.of(context).pop(true),
+                                    child: const Text("Excluir"),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                        onDismissed: (direction) {
+                          Provider.of<ProdutoController>(context, listen: false).deletarProduto(produto.id!);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Produto "${produto.nome}" excluído.'),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(vertical: 4),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(0),
+                            border: Border.all(
+                              color: _getBorderColor(produto),
+                              width: 1.5,
+                            ),
                           ),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              SizedBox(
-                                width: 50,
-                                child: Text(
-                                  produto.codigo,
-                                  style: const TextStyle(fontWeight: FontWeight.w500),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                SizedBox(
+                                  width: 50,
+                                  child: Text(produto.codigo,
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                              Expanded(
-                                child: Text(
-                                  produto.nome,
+                                Expanded(
+                                  child: Text(produto.nome, 
                                   textAlign: TextAlign.center,
+                                  ),
                                 ),
-                              ),
-                              SizedBox(
-                                width: 50,
-                                child: Text(
-                                  produto.duz
-                                    .toStringAsFixed(2)
-                                    .replaceAll(RegExp(r'0*$'), '')
-                                    .replaceAll(RegExp(r'\.$'), ''),
-                                  textAlign: TextAlign.right,
-                                  style: const TextStyle(fontWeight: FontWeight.w500),
+                                SizedBox(
+                                  width: 50,
+                                  child: Text(
+                                    produto.duz.toStringAsFixed(2).replaceAll(RegExp(r'0*$'), '').replaceAll(RegExp(r'\.$'), ''),
+                                    textAlign: TextAlign.right,
+                                    style: const TextStyle(fontWeight: FontWeight.w500),
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       );

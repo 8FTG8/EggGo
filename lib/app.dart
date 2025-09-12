@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
         
-        Provider<ProdutoService>(create: (_) => MockProdutoServiceImpl()), // Teste local
+        Provider<ProdutoService>(create: (_) => ProdutoServiceImpl()),
         ChangeNotifierProvider<ProdutoController>(
           create: (context) => ProdutoController(
             context.read<ProdutoService>(),
