@@ -7,12 +7,17 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:614796990557:android:f8aff5ec673944755f15b4",
+        "mobilesdk_app_id": "1:614796990557:android:7370e070843d4d925f15b4",
         "android_client_info": {
-          "package_name": "com.example.app_frontend"
+          "package_name": "com.ftg.egggo"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "614796990557-4noan9s79h3sbmusln5nnsud11h2kjs2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyC1SNmFHyboSBXFH0BXhhrDrx8ORUQmDSg"
@@ -20,7 +25,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "614796990557-4noan9s79h3sbmusln5nnsud11h2kjs2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "614796990557-jr34ghndusfhp7pnmi69nh7u1kst6as0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.appFrontend"
+              }
+            }
+          ]
         }
       }
     }
