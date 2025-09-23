@@ -1,6 +1,6 @@
 # App EggGo - em Produção 🚀
 
-## Software gerenciador de clientes, vendas e produtos com suporte offline.
+### Software gerenciador de clientes, vendas e produtos com suporte offline.
 
 Este é um aplicativo em Flutter para o gerenciamento e cadastro de produtos e vendas, especificamente focado em ovos de diferentes tipos, tamanhos e embalagens. Feito sob medida para a empresa [EggGo](https://www.instagram.com/egg.go_ovos?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==)!
 
