@@ -58,4 +58,4 @@ android/app/google-services.json
 ios/Runner/GoogleService-Info.plist
 
 # Configuração do Firebase gerada pelo FlutterFire CLI
-lib/firebase_options.dart
+lib/a_core/firebase/firebase_options.dart
