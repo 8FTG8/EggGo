@@ -4,7 +4,7 @@ import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import 'a_core/firebase/firebase_service.dart';
+import 'a_core/firebase/firebase_options.dart';
 import 'f_services/local_sql_service.dart';
 import 'app.dart';
 
