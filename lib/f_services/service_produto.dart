@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'dart:async';
 
 import '../b_models/produto_model.dart';
@@ -26,7 +27,11 @@ class ProdutoServiceImpl implements ProdutoService {
   
   @override // Apenas salva localmente. A verificação de duplicidade será feita na sincronização.
   Future<void> adicionarProduto(Produto produto) async {
-    await _localStorageService.addPendingProduto(produto);
+    if (kIsWeb) {
+      await sincronizarProduto(produto);
+    } else {
+      await _localStorageService.addPendingProduto(produto);
+    }
   }
 
   @override

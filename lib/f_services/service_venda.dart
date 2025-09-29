@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import '../b_models/venda_model.dart';
 import 'local_sql_service.dart';
 
@@ -16,7 +17,11 @@ class VendaServiceImpl implements VendaService {
 
   @override
   Future<void> adicionarVenda(Venda venda) async {
-    await _localStorageService.addPendingVenda(venda); // Agora, sempre adiciona à fila local
+    if (kIsWeb) {
+      await _vendasCollection.doc(venda.id).set(venda.toMap()); // Na web, salva diretamente no Firebase.
+    } else {
+      await _localStorageService.addPendingVenda(venda);
+    }
   }
 
   @override

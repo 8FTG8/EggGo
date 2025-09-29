@@ -22,9 +22,15 @@ class ProdutoController with ChangeNotifier {
     _isLoading = true;
     notifyListeners();
     _produtoService.getProdutos().listen((firebaseProdutos) async { // Carrega os produtos pendentes do banco de dados local
-        final pendingProdutosMap = await _localStorageService.getPendingProdutos();
-        final pendingProdutos = pendingProdutosMap.map((map) => Produto.fromDbMap(map)).toList();
-        final combinedList = {...pendingProdutos, ...firebaseProdutos}.toList(); // Combina as listas usando um Set para remover duplicados automaticamente
+        List<Produto> combinedList;
+        if (kIsWeb) {
+          combinedList = firebaseProdutos;
+        } else {
+          final pendingProdutosMap = await _localStorageService.getPendingProdutos();
+          final pendingProdutos = pendingProdutosMap.map((map) => Produto.fromDbMap(map)).toList();
+          combinedList = {...pendingProdutos, ...firebaseProdutos}.toList(); // Combina as listas usando um Set para remover duplicados automaticamente
+        }
+
         combinedList.sort((a, b) => a.codigo.compareTo(b.codigo));
         _produtos = combinedList;
         _isLoading = false;

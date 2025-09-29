@@ -37,25 +37,15 @@ app.*.map.json
 /android/.gradle
 /android/build
 
-# Arquivos de build do iOS
-ios/build/
-ios/Pods/
-ios/Podfile.lock
-ios/.symlinks/
-ios/Runner.xcworkspace/
-
 # Arquivos de keystore para assinatura do app (Android)
 *.jks
 *.keystore
 android/key.properties
 
-# === ARQUIVOS SENSÍVEIS DO FIREBASE! === #
+# === ARQUIVOS SENSÍVEIS DO FIREBASE === #
 
 # Configuração do Firebase para Android
 android/app/google-services.json
-
-# Configuração do Firebase para iOS
-ios/Runner/GoogleService-Info.plist
 
 # Configuração do Firebase gerada pelo FlutterFire CLI
 lib/a_core/firebase/firebase_options.dart

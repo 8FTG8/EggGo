@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'dart:async';
 
 import '../b_models/cliente_model.dart';
@@ -28,7 +29,11 @@ class ClienteServiceImpl implements ClienteService {
 
   @override
   Future<void> adicionarCliente(Cliente cliente) async {
-    await _localStorageService.addPendingCliente(cliente);
+    if (kIsWeb) { // Na web, salva diretamente no Firebase.
+      await _clientesCollection.doc(cliente.id).set(cliente.toMap()); 
+    } else {
+      await _localStorageService.addPendingCliente(cliente);
+    }
   }
 
   @override // Lógica original de salvar no Firebase
@@ -38,7 +43,11 @@ class ClienteServiceImpl implements ClienteService {
 
   @override
   Future<void> atualizarCliente(Cliente cliente) async {
-    await _localStorageService.upsertPendingCliente(cliente);
+    if (kIsWeb) { // Na web, atualiza diretamente no Firebase.
+      await _clientesCollection.doc(cliente.id).update(cliente.toMap()); 
+    } else {
+      await _localStorageService.upsertPendingCliente(cliente);
+    }
   }
 
   @override

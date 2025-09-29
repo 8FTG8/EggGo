@@ -1,4 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+
 import '../b_models/venda_model.dart';
 import '../f_services/service_venda.dart';
 import '../f_services/local_sql_service.dart';
@@ -27,10 +29,14 @@ class VendaController with ChangeNotifier {
   void _ouvirVendas() {
     _isLoading = true;
     notifyListeners();
-    _vendaService.getVendas().listen((firebaseVendas) async {// Carrega as vendas pendentes do banco de dados local
-      final pendingVendasMap = await _localStorageService.getPendingVendas();
-      final pendingVendas = pendingVendasMap.map((map) => Venda.fromDbMap(map)).toList();
-      _vendas = {...pendingVendas, ...firebaseVendas}.toList(); // Combina as listas usando um Set para remover duplicados e depois converte para lista.
+    _vendaService.getVendas().listen((firebaseVendas) async { // Carrega as vendas pendentes do banco de dados local
+      if (kIsWeb) {
+        _vendas = firebaseVendas;
+      } else {
+        final pendingVendasMap = await _localStorageService.getPendingVendas();
+        final pendingVendas = pendingVendasMap.map((map) => Venda.fromDbMap(map)).toList();
+        _vendas = {...pendingVendas, ...firebaseVendas}.toList(); // Combina as listas usando um Set para remover duplicados e depois converte para lista.
+      }
       _isLoading = false;
       notifyListeners();
     }, 

@@ -22,10 +22,15 @@ class ClienteController with ChangeNotifier {
     _isLoading = true;
     notifyListeners();
     _clienteService.getClientes().listen((firebaseClientes) async { // Carrega os clientes pendentes do banco de dados local
-        final pendingClientesMap = await _localStorageService.getPendingClientes();
-        final pendingClientes = pendingClientesMap.map((map) => Cliente.fromDbMap(map)).toList();
-        final combinedList = {...pendingClientes, ...firebaseClientes}.toList(); // Combina as listas usando um Set para remover duplicados automaticamente
-        combinedList.sort((a, b) => a.nome.toLowerCase().compareTo(b.nome.toLowerCase())); 
+        List<Cliente> combinedList;
+        if (kIsWeb) {
+          combinedList = firebaseClientes;
+        } else {
+          final pendingClientesMap = await _localStorageService.getPendingClientes();
+          final pendingClientes = pendingClientesMap.map((map) => Cliente.fromDbMap(map)).toList();
+          combinedList = {...pendingClientes, ...firebaseClientes}.toList(); // Combina as listas usando um Set para remover duplicados automaticamente
+        }
+        combinedList.sort((a, b) => a.nome.toLowerCase().compareTo(b.nome.toLowerCase()));
         _clientes = combinedList;
         _isLoading = false;
         notifyListeners();

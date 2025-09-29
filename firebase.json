@@ -1,1 +1,16 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"app-distribuidora-ftg","appId":"1:614796990557:android:f8aff5ec673944755f15b4","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"app-distribuidora-ftg","configurations":{"android":"1:614796990557:android:f8aff5ec673944755f15b4","ios":"1:614796990557:ios:43be080a0f4b77985f15b4","web":"1:614796990557:web:f0fb5b2a4deb1e285f15b4"}}}}}}
+{
+  "hosting": {
+    "public": "build/web",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}
