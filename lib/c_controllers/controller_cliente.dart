@@ -83,25 +83,18 @@ class ClienteController with ChangeNotifier {
     final clienteIndex = _clientes.indexWhere((c) => c.id == id);
     if (clienteIndex == -1) return;
     final clienteParaDeletar = _clientes[clienteIndex];
-    // Exclusão otimista da UI
     _clientes.removeAt(clienteIndex);
     notifyListeners();
     try {
-      // Verifica se o cliente está pendente de sincronização
-      final pendingClientesMap = await _localStorageService.getPendingClientes();
-      final pendingMatch = pendingClientesMap.firstWhere(
-        (map) => map['uuid'] == id,
-        orElse: () => <String, dynamic>{},
-      );
-      if (pendingMatch.isNotEmpty) {
-        // Se estiver pendente, remove apenas do banco de dados local
-        await _localStorageService.deletePendingCliente(pendingMatch['id'] as int);
-      } else {
-        // Se já estiver sincronizado, solicita a exclusão no Firebase
+      if (kIsWeb) {
         await _clienteService.deletarCliente(id);
+      } else {
+        final deletedFromLocal = await _localStorageService.deletePendingByUuid('pending_clientes', id);
+        if (!deletedFromLocal) {
+          await _clienteService.deletarCliente(id);
+        }
       }
     } catch (e) {
-      // Reverte a UI em caso de falha
       _clientes.insert(clienteIndex, clienteParaDeletar);
       notifyListeners();
       debugPrint("Erro ao deletar cliente: $e");

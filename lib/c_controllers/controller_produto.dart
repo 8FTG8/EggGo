@@ -71,19 +71,13 @@ class ProdutoController with ChangeNotifier {
     notifyListeners();
 
     try {
-      // Verifica se o produto está pendente de sincronização
-      final pendingProdutosMap = await _localStorageService.getPendingProdutos();
-      final pendingMatch = pendingProdutosMap.firstWhere(
-        (map) => map['uuid'] == id,
-        orElse: () => <String, dynamic>{},
-      );
-
-      if (pendingMatch.isNotEmpty) {
-        // Se estiver pendente, remove apenas do banco de dados local
-        await _localStorageService.deletePendingProduto(pendingMatch['id'] as int);
-      } else {
-        // Se já estiver sincronizado, solicita a exclusão no Firebase
+      if (kIsWeb) {
         await _produtoService.deletarProduto(id);
+      } else {
+        final deletedFromLocal = await _localStorageService.deletePendingByUuid('pending_produtos', id);
+        if (!deletedFromLocal) {
+          await _produtoService.deletarProduto(id);
+        }
       }
     } catch (e) {
       // Reverte a UI em caso de falha

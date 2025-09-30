@@ -68,6 +68,17 @@ class SincronizacaoController with ChangeNotifier {
   Future<void> startSync() async {
     if (_isSyncing) return;
 
+    // Na web, não há sincronização de dados pendentes. Apenas atualiza o status.
+    if (kIsWeb) {
+      _isSyncing = true;
+      notifyListeners();
+      await _saveLastSyncTime(DateTime.now());
+      _geralStatusMessage = "Conectado ao servidor";
+      _isSyncing = false;
+      notifyListeners();
+      return;
+    }
+
     _isSyncing = true;
     _geralStatusMessage = "Iniciando sincronização...";
     // Reseta todas as tarefas para 'pendente'

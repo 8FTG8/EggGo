@@ -75,19 +75,13 @@ class VendaController with ChangeNotifier {
     notifyListeners();
 
     try {
-      // Verifica se a venda está pendente de sincronização
-      final pendingVendasMap = await _localStorageService.getPendingVendas();
-      final pendingMatch = pendingVendasMap.firstWhere(
-        (map) => map['uuid'] == id,
-        orElse: () => <String, dynamic>{},
-      );
-
-      if (pendingMatch.isNotEmpty) {
-        // Se estiver pendente, remove apenas do banco de dados local
-        await _localStorageService.deletePendingVenda(pendingMatch['id'] as int);
-      } else {
-        // Se já estiver sincronizada, solicita a exclusão no Firebase
+      if (kIsWeb) {
         await _vendaService.deletarVenda(id);
+      } else {
+        final deletedFromLocal = await _localStorageService.deletePendingByUuid('pending_vendas', id);
+        if (!deletedFromLocal) {
+          await _vendaService.deletarVenda(id);
+        }
       }
     } catch (e) {
       // Reverte a UI em caso de falha
