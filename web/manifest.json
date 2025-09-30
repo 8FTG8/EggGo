@@ -1,6 +1,6 @@
 {
-    "name": "egg_go",
-    "short_name": "egg_go",
+    "name": "EggGo",
+    "short_name": "EggGo",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
