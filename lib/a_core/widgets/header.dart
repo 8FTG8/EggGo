@@ -26,7 +26,7 @@ class CustomHeader extends StatelessWidget implements PreferredSizeWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 18),
+            padding: const EdgeInsets.symmetric(horizontal: 12),
             child: Row(
               mainAxisAlignment: !showBackButton ? MainAxisAlignment.center : MainAxisAlignment.start,
               children: [
