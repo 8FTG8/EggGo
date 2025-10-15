@@ -7,6 +7,10 @@ Este é um aplicativo em Flutter para o gerenciamento e cadastro de produtos e v
 <!-- Adicione aqui screenshots ou um GIF do app em ação -->
 <!-- ![Exemplo do App](caminho/para/sua/imagem.png) -->
 
+## Vídeo de Apresentação
+
+https://github.com/user-attachments/assets/cb1caa94-6990-48a2-b088-d9dcaaa2e279
+
 ## Funcionalidades Principais
 
 *   **Autenticação de Usuários:** Login seguro com e-mail e senha.
