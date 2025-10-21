@@ -9,7 +9,8 @@ import '../../models/venda_model.dart';
 class PdfGenerator {
   static Future<void> gerarComprovanteVenda(Venda venda, PdfPageFormat pageFormat) async {
     final pdf = pw.Document();
-    final logo = pw.MemoryImage((await rootBundle.load('lib/a_core/images/logo.png')).buffer.asUint8List());
+    // Caminho do logo corrigido
+    final logo = pw.MemoryImage((await rootBundle.load('lib/core/images/logo.png')).buffer.asUint8List());
     final formatadorMoeda = NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
     final formatadorData = DateFormat('dd/MM/yyyy \'às\' HH:mm');
 

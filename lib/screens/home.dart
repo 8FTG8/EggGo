@@ -63,8 +63,9 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
           ? AppBar(
               leadingWidth: 136,
               leading: Padding(
-                  padding: const EdgeInsets.only(left: 16.0),
-                  child: Image.asset('lib/a_core/images/logo.png', width: 120)),
+                padding: const EdgeInsets.only(left: 16.0),
+                child: Image.asset('lib/core/images/logo.png', width: 120),
+              ),
               actions: [
                 Consumer<ThemeController>(
                   builder: (context, themeController, child) {

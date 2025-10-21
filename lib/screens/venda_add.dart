@@ -157,48 +157,11 @@ class _NovaVendaState extends State<NovaVenda> {
         child: ListView(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           children: [
-            const SizedBox(height: 24),
-            Autocomplete<Cliente>(
-              key: _autocompleteKey,
-              displayStringForOption: (Cliente option) => option.nome,
-              optionsBuilder: (TextEditingValue textEditingValue) {
-                _clienteController.text = textEditingValue
-                    .text; // Atualiza o controller externo com o texto digitado
-                if (textEditingValue.text.isEmpty) {
-                  return const Iterable<Cliente>.empty();
-                }
-                return allClientes.where((Cliente cliente) {
-                  // Filtra a lista de clientes com base no que foi digitado
-                  final input = textEditingValue.text.toLowerCase();
-                  final nome = cliente.nome.toLowerCase();
-                  final apelido = cliente.apelido?.toLowerCase() ?? '';
-                  return nome.contains(input) || apelido.contains(input);
-                });
-              },
-              onSelected: (Cliente selection) {
-                _clienteController.text = selection.nome;
-                FocusScope.of(context)
-                    .unfocus(); // Esconde o teclado após a seleção
-              },
-              fieldViewBuilder: (context, textEditingController, focusNode,
-                  onFieldSubmitted) {
-                return TextFormField(
-                  controller:
-                      textEditingController, // Usa o controller do Autocomplete
-                  focusNode: focusNode,
-                  decoration: const InputDecoration(
-                      labelText: '* Cliente', isDense: true),
-                  validator: (value) =>
-                      value!.trim().isEmpty ? 'Informe um cliente!' : null,
-                );
-              },
-            ),
 
-            const SizedBox(height: 12),
-            DropdownButtonFormField<String>(
+            const SizedBox(height: 24),
+              DropdownButtonFormField<String>(
               initialValue: _pagamentoSelecionado,
-              decoration: const InputDecoration(
-                  labelText: '* Método de pagamento', isDense: true),
+              decoration: const InputDecoration(labelText: '* Método de pagamento', isDense: true),
               items: _pagamento.map((String cor) {
                 return DropdownMenuItem<String>(
                   value: cor,
@@ -210,8 +173,37 @@ class _NovaVendaState extends State<NovaVenda> {
                   _pagamentoSelecionado = newValue;
                 });
               },
-              validator: (value) =>
-                  value == null ? 'Selecione um método de pagamento!' : null,
+              validator: (value) => value == null ? 'Selecione um método de pagamento!' : null,
+            ),
+
+            const SizedBox(height: 12),
+            Autocomplete<Cliente>(
+              key: _autocompleteKey,
+              displayStringForOption: (Cliente option) => option.nome,
+              optionsBuilder: (TextEditingValue textEditingValue) {
+                _clienteController.text = textEditingValue.text; // Atualiza o controller externo com o texto digitado
+                if (textEditingValue.text.isEmpty) {
+                  return const Iterable<Cliente>.empty();
+                } 
+                return allClientes.where((Cliente cliente) { // Filtra a lista de clientes com base no que foi digitado
+                  final input = textEditingValue.text.toLowerCase();
+                  final nome = cliente.nome.toLowerCase();
+                  final apelido = cliente.apelido?.toLowerCase() ?? '';
+                  return nome.contains(input) || apelido.contains(input);
+                });
+              },
+              onSelected: (Cliente selection) {
+                _clienteController.text = selection.nome;
+                FocusScope.of(context).unfocus(); // Esconde o teclado após a seleção
+              },
+              fieldViewBuilder: (context, textEditingController, focusNode, onFieldSubmitted) {
+                return TextFormField(
+                  controller: textEditingController, // Usa o controller do Autocomplete
+                  focusNode: focusNode,
+                  decoration: const InputDecoration(labelText: '* Cliente', isDense: true),
+                  validator: (value) => value!.trim().isEmpty ? 'Informe um cliente!' : null,
+                );
+              },
             ),
 
             const SizedBox(height: 8),
@@ -234,8 +226,7 @@ class _NovaVendaState extends State<NovaVenda> {
             ),
 
             const SizedBox(height: 12),
-            Text(
-              'Total: R\$ ${_calcularTotal().toStringAsFixed(2).replaceAll('.', ',')}',
+            Text('Total: R\$ ${_calcularTotal().toStringAsFixed(2).replaceAll('.', ',')}',
               style: GoogleFonts.inter(
                 fontWeight: FontWeight.w700,
                 fontSize: 18,
@@ -243,8 +234,7 @@ class _NovaVendaState extends State<NovaVenda> {
             ),
 
             // Divider \\
-            Divider(
-                thickness: 1.0, color: Theme.of(context).colorScheme.primary),
+            Divider(thickness: 1.0, color: Theme.of(context).colorScheme.primary),
             Padding(
               padding: const EdgeInsets.only(top: 8, bottom: 24),
               child: Row(
