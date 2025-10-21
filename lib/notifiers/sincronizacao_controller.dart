@@ -1,14 +1,14 @@
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../b_models/venda_model.dart';
-import '../b_models/cliente_model.dart';
-import '../b_models/produto_model.dart';
+import '../models/venda_model.dart';
+import '../models/cliente_model.dart';
+import '../models/produto_model.dart';
 
-import '../f_services/local_sql_service.dart';
-import '../f_services/service_venda.dart';
-import '../f_services/service_cliente.dart';
-import '../f_services/service_produto.dart';
+import '../services/local_sql_service.dart';
+import '../services/service_venda.dart';
+import '../services/service_cliente.dart';
+import '../services/service_produto.dart';
 
 // Enum para representar o status de cada tarefa de sincronização
 enum SyncTaskStatus { pendente, sincronizando, sucesso, falha }

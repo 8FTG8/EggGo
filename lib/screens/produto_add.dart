@@ -4,13 +4,13 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-import '../a_core/widgets/header.dart';
+import '../core/widgets/header.dart';
 
-import '../b_models/produto_model.dart';
+import '../models/produto_model.dart';
 
-import '../c_controllers/controller_produto.dart';
+import '../notifiers/controller_produto.dart';
 
-import '../f_services/service_produto.dart';
+import '../services/service_produto.dart';
 
 class NovoProduto extends StatefulWidget {
   static const routeName = 'NovoProduto';
@@ -32,10 +32,34 @@ class _NovoProdutoState extends State<NovoProduto> {
   String? _quantidadeSelecionada;
 
   // Opções para os dropdowns
-  static const List<String> _cores = ['Branco', 'Vermelho', 'Codorna', 'Caipira'];
-  static const List<String> _tamanhos = ['Médio', 'Grande', 'Extra', 'Jumbo', 'Não aplicável'];
-  static const List<String> _embalagens = ['Estojo', 'Granel', 'PVC', 'Conserva', 'Não aplicável'];
-  static const List<String> _unidades = ['CX', 'Dúzia', 'Cart. 30', 'Cart. 20', '1kg', '0.5kg'];
+  static const List<String> _cores = [
+    'Branco',
+    'Vermelho',
+    'Codorna',
+    'Caipira'
+  ];
+  static const List<String> _tamanhos = [
+    'Médio',
+    'Grande',
+    'Extra',
+    'Jumbo',
+    'Não aplicável'
+  ];
+  static const List<String> _embalagens = [
+    'Estojo',
+    'Granel',
+    'PVC',
+    'Conserva',
+    'Não aplicável'
+  ];
+  static const List<String> _unidades = [
+    'CX',
+    'Dúzia',
+    'Cart. 30',
+    'Cart. 20',
+    '1kg',
+    '0.5kg'
+  ];
 
   void _atualizarDuzias(String? unidadeSelecionada) {
     double duzias = 0.0;
@@ -102,9 +126,11 @@ class _NovoProdutoState extends State<NovoProduto> {
       }
     } on FirebaseException catch (e) {
       if (mounted) {
-        String errorMessage = 'Ocorreu um erro ao salvar no Firebase: ${e.message}';
+        String errorMessage =
+            'Ocorreu um erro ao salvar no Firebase: ${e.message}';
         if (e.code == 'permission-denied') {
-          errorMessage = 'Erro de permissão. Verifique as Regras de Segurança do Firestore no console do Firebase.';
+          errorMessage =
+              'Erro de permissão. Verifique as Regras de Segurança do Firestore no console do Firebase.';
         }
         scaffoldMessenger.showSnackBar(
           SnackBar(
@@ -159,7 +185,8 @@ class _NovoProdutoState extends State<NovoProduto> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomHeader(pageTitle: 'Cadastrar Produto', showBackButton: true),
+      appBar: const CustomHeader(
+          pageTitle: 'Cadastrar Produto', showBackButton: true),
       body: Padding(
         padding: const EdgeInsets.all(18.0),
         child: Form(
@@ -169,7 +196,8 @@ class _NovoProdutoState extends State<NovoProduto> {
             children: [
               TextFormField(
                 controller: _codigoController,
-                decoration: const InputDecoration(labelText: '* Código', prefixText: '#'),
+                decoration: const InputDecoration(
+                    labelText: '* Código', prefixText: '#'),
                 keyboardType: TextInputType.number,
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
@@ -222,18 +250,20 @@ class _NovoProdutoState extends State<NovoProduto> {
                     _quantidadeSelecionada = newValue;
                     _atualizarDuzias(newValue);
                   });
-                },         
+                },
               ),
               const SizedBox(height: 24),
               ElevatedButton(
                 onPressed: _isLoading ? null : _salvarProduto,
-                style: ElevatedButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 12)),
+                style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 12)),
                 child: _isLoading
-                  ? const SizedBox(
-                      height: 24,
-                      width: 24,
-                      child: CircularProgressIndicator(strokeWidth: 3))
-                  : Text('Salvar produto', style: GoogleFonts.inter(fontSize: 16)),
+                    ? const SizedBox(
+                        height: 24,
+                        width: 24,
+                        child: CircularProgressIndicator(strokeWidth: 3))
+                    : Text('Salvar produto',
+                        style: GoogleFonts.inter(fontSize: 16)),
               ),
             ],
           ),

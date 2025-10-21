@@ -1,9 +1,9 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-import '../b_models/venda_model.dart';
-import '../b_models/cliente_model.dart';
-import '../b_models/produto_model.dart';
+import '../models/venda_model.dart';
+import '../models/cliente_model.dart';
+import '../models/produto_model.dart';
 
 class LocalStorageService {
   static final LocalStorageService instance = LocalStorageService._init();
@@ -39,7 +39,7 @@ class LocalStorageService {
         metodoPagamento $textTypeNullable
       )
     ''');
-    
+
     await db.execute('''
       CREATE TABLE pending_clientes (
         id $idType,
@@ -123,7 +123,8 @@ class LocalStorageService {
       where: 'uuid = ?',
       whereArgs: [cliente.id],
       limit: 1,
-    ); if (existing.isNotEmpty) {
+    );
+    if (existing.isNotEmpty) {
       await db.update(
         'pending_clientes',
         cliente.toDbMap(),
@@ -135,7 +136,7 @@ class LocalStorageService {
     }
   }
 
-  // --- MÉTODOS PARA PRODUTOS --- 
+  // --- MÉTODOS PARA PRODUTOS ---
 
   Future<void> addPendingProduto(Produto produto) async {
     final db = await instance.database;
@@ -152,8 +153,19 @@ class LocalStorageService {
     await db.delete('pending_produtos', where: 'id = ?', whereArgs: [id]);
   }
 
+  /// Tenta deletar um item pendente de uma tabela pelo seu UUID.
+  /// Retorna `true` se um item foi encontrado e deletado, `false` caso contrário.
+  Future<bool> deletePendingByUuid(String tableName, String uuid) async {
+    final db = await instance.database;
+    final count = await db.delete(
+      tableName,
+      where: 'uuid = ?',
+      whereArgs: [uuid],
+    );
+    return count > 0;
+  }
+
   // -- FECHA O BANCO DE DADOS --
-  
   Future close() async {
     final db = await instance.database;
     db.close();

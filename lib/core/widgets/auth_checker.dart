@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import '../../d_views/home.dart';
-import '../../d_views/login.dart';
+import '../../screens/home.dart';
+import '../../screens/login.dart';
 
 class AuthChecker extends StatelessWidget {
   const AuthChecker({super.key});

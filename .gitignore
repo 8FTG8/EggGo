@@ -1,3 +1,14 @@
+# === ARQUIVOS SENSÍVEIS DO FIREBASE === #
+
+# Configuração do Firebase para Android
+android/app/google-services.json
+
+# Configuração do Firebase gerada pelo FlutterFire CLI
+lib/a_core/firebase/firebase_options.dart
+
+# Cache e configurações locais do Firebase CLI
+/.firebase/
+
 # Miscellaneous
 *.class
 *.log
@@ -41,14 +52,3 @@ app.*.map.json
 *.jks
 *.keystore
 android/key.properties
-
-# === ARQUIVOS SENSÍVEIS DO FIREBASE === #
-
-# Configuração do Firebase para Android
-android/app/google-services.json
-
-# Configuração do Firebase gerada pelo FlutterFire CLI
-lib/a_core/firebase/firebase_options.dart
-
-# Cache e configurações locais do Firebase CLI
-/.firebase/

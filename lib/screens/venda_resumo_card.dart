@@ -1,4 +1,4 @@
-import 'package:egg_go/c_controllers/controller_venda.dart';
+import 'package:egg_go/notifiers/controller_venda.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -78,36 +78,41 @@ class _CardVendasState extends State<CardVendas> {
 
                   // FILTRO DE DATA \\
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                     decoration: BoxDecoration(
                       color: Colors.transparent,
                       borderRadius: BorderRadius.circular(6),
                       border: Border.all(
-                        color: isSelected ? colorScheme.primary : colorScheme.onSurface.withAlpha(128),
+                        color: isSelected
+                            ? colorScheme.primary
+                            : colorScheme.onSurface.withAlpha(128),
                       ),
                     ),
                     child: Text(
                       filtros[index],
                       style: GoogleFonts.inter(
-                        fontWeight: isSelected ? FontWeight.w800 : FontWeight.w600,
+                        fontWeight:
+                            isSelected ? FontWeight.w800 : FontWeight.w600,
                         fontSize: 14,
-                        color: isSelected ? colorScheme.primary : colorScheme.onSurface,
+                        color: isSelected
+                            ? colorScheme.primary
+                            : colorScheme.onSurface,
                       ),
                     ),
                   ),
                 );
               }),
             ),
-
             Consumer<VendaController>(builder: (context, controller, child) {
               final periodo = _getPeriodoSelecionado();
               final resumo = controller.getResumoVendas(periodo);
               return Column(
                 children: [
-                  
                   // VENDAS REALIZADAS \\
                   const SizedBox(height: 8),
-                  Text('Vendas realizadas: ${resumo.totalVendas}',
+                  Text(
+                    'Vendas realizadas: ${resumo.totalVendas}',
                     style: GoogleFonts.inter(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
@@ -131,8 +136,8 @@ class _CardVendasState extends State<CardVendas> {
                       IconButton(
                         icon: Icon(
                           _isVisible
-                            ? Icons.visibility_outlined
-                            : Icons.visibility_off_outlined,
+                              ? Icons.visibility_outlined
+                              : Icons.visibility_off_outlined,
                           size: 24,
                         ),
                         onPressed: () {

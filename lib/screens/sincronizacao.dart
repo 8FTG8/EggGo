@@ -3,8 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
-import '../c_controllers/sincronizacao_controller.dart';
-import '../a_core/widgets/header.dart';
+import '../notifiers/sincronizacao_controller.dart';
+import '../core/widgets/header.dart';
 
 class Sincronizacao extends StatelessWidget {
   static const routeName = 'SincronizacaoPage';
@@ -13,7 +13,8 @@ class Sincronizacao extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomHeader(pageTitle: 'Sincronização', showBackButton: true),
+      appBar:
+          const CustomHeader(pageTitle: 'Sincronização', showBackButton: true),
       body: Consumer<SincronizacaoController>(
         builder: (context, controller, child) {
           return Padding(
@@ -36,7 +37,8 @@ class Sincronizacao extends StatelessWidget {
     );
   }
 
-  Widget _buildStatusSection(BuildContext context, SincronizacaoController controller) {
+  Widget _buildStatusSection(
+      BuildContext context, SincronizacaoController controller) {
     bool hasFailed = controller.geralStatusMessage.contains('Falha');
     final colorScheme = Theme.of(context).colorScheme;
     return Column(
@@ -73,7 +75,8 @@ class Sincronizacao extends StatelessWidget {
     );
   }
 
-  Widget _buildTaskItem(BuildContext context, String name, SyncTaskStatus status) {
+  Widget _buildTaskItem(
+      BuildContext context, String name, SyncTaskStatus status) {
     final colorScheme = Theme.of(context).colorScheme;
     Widget iconWidget;
     Color color = colorScheme.onSurface.withAlpha(153);
@@ -111,24 +114,31 @@ class Sincronizacao extends StatelessWidget {
     );
   }
 
-  Widget _buildLastSyncInfo(BuildContext context, SincronizacaoController controller) {
+  Widget _buildLastSyncInfo(
+      BuildContext context, SincronizacaoController controller) {
     String lastSyncText = 'Nunca sincronizado';
     if (controller.lastSyncTime != null) {
-      lastSyncText = 'Última sincronização: ${DateFormat('dd/MM/yy \'às\' HH:mm').format(controller.lastSyncTime!)}';
+      lastSyncText =
+          'Última sincronização: ${DateFormat('dd/MM/yy \'às\' HH:mm').format(controller.lastSyncTime!)}';
     }
-    return Text(lastSyncText, style: TextStyle(color: Theme.of(context).colorScheme.onSurface.withAlpha(153)));
+    return Text(lastSyncText,
+        style: TextStyle(
+            color: Theme.of(context).colorScheme.onSurface.withAlpha(153)));
   }
 
-  Widget _buildSyncButton(BuildContext context, SincronizacaoController controller) {
+  Widget _buildSyncButton(
+      BuildContext context, SincronizacaoController controller) {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton.icon(
         icon: const Icon(Icons.sync),
-        label: Text('Sincronizar Agora',
+        label: Text(
+          'Sincronizar Agora',
           style: GoogleFonts.inter(fontSize: 16),
         ),
         onPressed: controller.isSyncing ? null : () => controller.startSync(),
-        style: ElevatedButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 16)),
+        style: ElevatedButton.styleFrom(
+            padding: const EdgeInsets.symmetric(vertical: 16)),
       ),
     );
   }

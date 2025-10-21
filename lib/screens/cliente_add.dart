@@ -5,12 +5,12 @@ import 'package:provider/provider.dart';
 import 'package:dio/dio.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
-import '../a_core/utils/validators.dart';
-import '../a_core/widgets/header.dart';
+import '../core/utils/validators.dart';
+import '../core/widgets/header.dart';
 
-import '../b_models/cliente_model.dart';
+import '../models/cliente_model.dart';
 
-import '../c_controllers/controller_cliente.dart';
+import '../notifiers/controller_cliente.dart';
 
 class NovoCliente extends StatefulWidget {
   static const routeName = 'NovoClientePage';
@@ -45,10 +45,14 @@ class _NovoClienteState extends State<NovoCliente> with MixinValidations {
 
   final _cepFocusNode = FocusNode();
 
-  final _cepMask = MaskTextInputFormatter(mask: '#####-###', filter: {"#": RegExp(r'[0-9]')});
-  final _phoneMask = MaskTextInputFormatter(mask: '(##) #####-####', filter: {"#": RegExp(r'[0-9]')});
-  final _cpfMask = MaskTextInputFormatter(mask: '###.###.###-##', filter: {"#": RegExp(r'[0-9]')});
-  final _cnpjMask = MaskTextInputFormatter(mask: '##.###.###/####-##', filter: {"#": RegExp(r'[0-9]')});
+  final _cepMask = MaskTextInputFormatter(
+      mask: '#####-###', filter: {"#": RegExp(r'[0-9]')});
+  final _phoneMask = MaskTextInputFormatter(
+      mask: '(##) #####-####', filter: {"#": RegExp(r'[0-9]')});
+  final _cpfMask = MaskTextInputFormatter(
+      mask: '###.###.###-##', filter: {"#": RegExp(r'[0-9]')});
+  final _cnpjMask = MaskTextInputFormatter(
+      mask: '##.###.###/####-##', filter: {"#": RegExp(r'[0-9]')});
 
   @override
   void initState() {
@@ -92,7 +96,8 @@ class _NovoClienteState extends State<NovoCliente> with MixinValidations {
         _bairroController.text = response.data['bairro'] ?? '';
         _cidadeController.text = response.data['localidade'] ?? '';
         _ufController.text = response.data['uf'] ?? '';
-        FocusScope.of(context).requestFocus(FocusNode()); // Move o foco para o próximo campo
+        FocusScope.of(context)
+            .requestFocus(FocusNode()); // Move o foco para o próximo campo
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -109,73 +114,80 @@ class _NovoClienteState extends State<NovoCliente> with MixinValidations {
     if (!(_formKey.currentState?.validate() ?? false)) {
       return;
     }
-      setState(() => _isLoading = true);
+    setState(() => _isLoading = true);
 
-      final scaffoldMessenger = ScaffoldMessenger.of(context);
-      final navigator = Navigator.of(context);
-      final cliente = Cliente(
-        id:                   widget.cliente?.id,
-        tipoPessoa:           _tipoPessoa,
-        nome:                 _nomeController.text.trim(),
-        apelido:              _apelidoController.text.nullIfEmpty,
-        email:                _emailController.text.nullIfEmpty,
-        telefone:             _telefoneController.text.nullIfEmpty,
-        cpf:                  _tipoPessoa == TipoPessoa.fisica ? _cpfController.text.nullIfEmpty : null,
-        cnpj:                 _tipoPessoa == TipoPessoa.juridica ? _cnpjController.text.nullIfEmpty : null,
-        inscricaoEstadual:    _tipoPessoa == TipoPessoa.juridica ? _ieController.text.nullIfEmpty : null,
-        cep:                  _cepController.text.nullIfEmpty,
-        logradouro:           _logradouroController.text.nullIfEmpty,
-        numero:               _numeroController.text.nullIfEmpty,
-        complemento:          _complementoController.text.nullIfEmpty,
-        bairro:               _bairroController.text.nullIfEmpty,
-        cidade:               _cidadeController.text.nullIfEmpty,
-        uf:                   _ufController.text.nullIfEmpty,
-        observacoes:          _observacoesController.text.nullIfEmpty,
-      );
+    final scaffoldMessenger = ScaffoldMessenger.of(context);
+    final navigator = Navigator.of(context);
+    final cliente = Cliente(
+      id: widget.cliente?.id,
+      tipoPessoa: _tipoPessoa,
+      nome: _nomeController.text.trim(),
+      apelido: _apelidoController.text.nullIfEmpty,
+      email: _emailController.text.nullIfEmpty,
+      telefone: _telefoneController.text.nullIfEmpty,
+      cpf: _tipoPessoa == TipoPessoa.fisica
+          ? _cpfController.text.nullIfEmpty
+          : null,
+      cnpj: _tipoPessoa == TipoPessoa.juridica
+          ? _cnpjController.text.nullIfEmpty
+          : null,
+      inscricaoEstadual: _tipoPessoa == TipoPessoa.juridica
+          ? _ieController.text.nullIfEmpty
+          : null,
+      cep: _cepController.text.nullIfEmpty,
+      logradouro: _logradouroController.text.nullIfEmpty,
+      numero: _numeroController.text.nullIfEmpty,
+      complemento: _complementoController.text.nullIfEmpty,
+      bairro: _bairroController.text.nullIfEmpty,
+      cidade: _cidadeController.text.nullIfEmpty,
+      uf: _ufController.text.nullIfEmpty,
+      observacoes: _observacoesController.text.nullIfEmpty,
+    );
 
-      try {
-        final clienteController = Provider.of<ClienteController>(context, listen: false);
-        if (widget.cliente == null) {
-          await clienteController.adicionarCliente(cliente);
-          scaffoldMessenger.showSnackBar(
-            SnackBar(
-              content: Text('Cliente salvo com sucesso!'),
-              backgroundColor: Theme.of(context).colorScheme.secondary,
-            ),
-          );
-        } else {
-          await clienteController.atualizarCliente(cliente);
-          scaffoldMessenger.showSnackBar(
-            SnackBar(
-              content: Text('Cliente atualizado com sucesso!'),
-              backgroundColor: Theme.of(context).colorScheme.secondary,
-            ),
-          );
-        }
+    try {
+      final clienteController =
+          Provider.of<ClienteController>(context, listen: false);
+      if (widget.cliente == null) {
+        await clienteController.adicionarCliente(cliente);
+        scaffoldMessenger.showSnackBar(
+          SnackBar(
+            content: Text('Cliente salvo com sucesso!'),
+            backgroundColor: Theme.of(context).colorScheme.secondary,
+          ),
+        );
+      } else {
+        await clienteController.atualizarCliente(cliente);
+        scaffoldMessenger.showSnackBar(
+          SnackBar(
+            content: Text('Cliente atualizado com sucesso!'),
+            backgroundColor: Theme.of(context).colorScheme.secondary,
+          ),
+        );
+      }
 
-        if (mounted) {
-          navigator.pop();
-        }
-      } catch (e) {
-        if (mounted) {
-          scaffoldMessenger.showSnackBar(
-            SnackBar(
-              content: Text('Erro ao salvar cliente: $e'),
-              backgroundColor: Theme.of(context).colorScheme.error,
-            ),
-          );
-        }
-      } finally {
-        if (mounted) {
-          setState(() => _isLoading = false);
+      if (mounted) {
+        navigator.pop();
+      }
+    } catch (e) {
+      if (mounted) {
+        scaffoldMessenger.showSnackBar(
+          SnackBar(
+            content: Text('Erro ao salvar cliente: $e'),
+            backgroundColor: Theme.of(context).colorScheme.error,
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
       }
     }
   }
-  
+
   Widget _buildCampo(
-    String label, 
+    String label,
     TextEditingController controller, {
-    int maxLines = 1, 
+    int maxLines = 1,
     FormFieldValidator<String>? validator,
     List<TextInputFormatter>? inputFormatters,
     TextInputType? keyboardType,
@@ -191,7 +203,8 @@ class _NovoClienteState extends State<NovoCliente> with MixinValidations {
       decoration: InputDecoration(
         labelText: label,
         isDense: true,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
       ),
     );
   }
@@ -216,11 +229,14 @@ class _NovoClienteState extends State<NovoCliente> with MixinValidations {
     _observacoesController.dispose();
     super.dispose();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomHeader(pageTitle: widget.cliente == null ? 'Cadastrar Cliente' : 'Editar Cliente', showBackButton: true),
+      appBar: CustomHeader(
+          pageTitle:
+              widget.cliente == null ? 'Cadastrar Cliente' : 'Editar Cliente',
+          showBackButton: true),
       body: Stack(
         children: [
           SingleChildScrollView(
@@ -232,18 +248,20 @@ class _NovoClienteState extends State<NovoCliente> with MixinValidations {
                 children: [
                   SegmentedButton<TipoPessoa>(
                     style: SegmentedButton.styleFrom(
-                      selectedBackgroundColor: Theme.of(context).colorScheme.primary.withAlpha(51),
-                      selectedForegroundColor: Theme.of(context).colorScheme.primary,
+                      selectedBackgroundColor:
+                          Theme.of(context).colorScheme.primary.withAlpha(51),
+                      selectedForegroundColor:
+                          Theme.of(context).colorScheme.primary,
                     ),
                     segments: const <ButtonSegment<TipoPessoa>>[
                       ButtonSegment<TipoPessoa>(
-                        value: TipoPessoa.fisica, 
-                        label: Text('Pessoa Física'), 
+                        value: TipoPessoa.fisica,
+                        label: Text('Pessoa Física'),
                         icon: Icon(Icons.person),
                       ),
                       ButtonSegment<TipoPessoa>(
-                        value: TipoPessoa.juridica, 
-                        label: Text('Pessoa Jurídica'), 
+                        value: TipoPessoa.juridica,
+                        label: Text('Pessoa Jurídica'),
                         icon: Icon(Icons.business),
                       ),
                     ],
@@ -254,44 +272,60 @@ class _NovoClienteState extends State<NovoCliente> with MixinValidations {
                       });
                     },
                   ),
-
                   const SizedBox(height: 16),
-                  _buildCampo(_tipoPessoa == TipoPessoa.fisica 
-                    ? '* Nome' 
-                    : '* Razão Social', _nomeController, validator: (value) => isEmpty(value, 'Este campo é obrigatório!')),
-                  
+                  _buildCampo(
+                      _tipoPessoa == TipoPessoa.fisica
+                          ? '* Nome'
+                          : '* Razão Social',
+                      _nomeController,
+                      validator: (value) =>
+                          isEmpty(value, 'Este campo é obrigatório!')),
                   const SizedBox(height: 12),
-                  _buildCampo(_tipoPessoa == TipoPessoa.fisica 
-                    ? 'Apelido' 
-                    : 'Nome Fantasia', _apelidoController),
-
+                  _buildCampo(
+                      _tipoPessoa == TipoPessoa.fisica
+                          ? 'Apelido'
+                          : 'Nome Fantasia',
+                      _apelidoController),
                   const SizedBox(height: 12),
-                  _buildCampo('E-mail', _emailController, keyboardType: TextInputType.emailAddress, 
-                    validator: (value) => validateEmail(value, "Insira um e-mail válido"),
+                  _buildCampo(
+                    'E-mail',
+                    _emailController,
+                    keyboardType: TextInputType.emailAddress,
+                    validator: (value) =>
+                        validateEmail(value, "Insira um e-mail válido"),
                   ),
-
                   const SizedBox(height: 12),
-                  _buildCampo('Telefone', _telefoneController, keyboardType: TextInputType.phone, inputFormatters: [_phoneMask],
-                    validator: (value) {
-                      if (value != null && value.isNotEmpty && !_phoneMask.isFill()) {
-                        return 'Telefone inválido.';
-                      }
-                      return null;
-                    }),
-
+                  _buildCampo('Telefone', _telefoneController,
+                      keyboardType: TextInputType.phone,
+                      inputFormatters: [_phoneMask], validator: (value) {
+                    if (value != null &&
+                        value.isNotEmpty &&
+                        !_phoneMask.isFill()) {
+                      return 'Telefone inválido.';
+                    }
+                    return null;
+                  }),
                   const SizedBox(height: 12),
                   if (_tipoPessoa == TipoPessoa.fisica)
-                    _buildCampo('CPF', _cpfController, keyboardType: TextInputType.number, inputFormatters: [_cpfMask], 
+                    _buildCampo(
+                      'CPF',
+                      _cpfController,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [_cpfMask],
                       validator: (v) => validateCPF(v),
                     ),
                   if (_tipoPessoa == TipoPessoa.juridica) ...[
-                    _buildCampo('* CNPJ', _cnpjController, keyboardType: TextInputType.number, inputFormatters: [_cnpjMask], 
-                      validator: (v) => combineValidators([() => isEmpty(v), () => validateCNPJ(v)]),
+                    _buildCampo(
+                      '* CNPJ',
+                      _cnpjController,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [_cnpjMask],
+                      validator: (v) => combineValidators(
+                          [() => isEmpty(v), () => validateCNPJ(v)]),
                     ),
                     const SizedBox(height: 12),
                     _buildCampo('Inscrição Estadual', _ieController),
                   ],
-
                   const SizedBox(height: 24),
                   InkWell(
                     onTap: () {
@@ -305,25 +339,27 @@ class _NovoClienteState extends State<NovoCliente> with MixinValidations {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text('Endereço',
-                            style: GoogleFonts.inter(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
-                              color: Theme.of(context).colorScheme.onSurface)),
+                              style: GoogleFonts.inter(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
+                                  color:
+                                      Theme.of(context).colorScheme.onSurface)),
                           Icon(
                             _enderecoVisivel
-                              ? Icons.keyboard_arrow_up
-                              : Icons.keyboard_arrow_down,
+                                ? Icons.keyboard_arrow_up
+                                : Icons.keyboard_arrow_down,
                             color: Theme.of(context).colorScheme.onSurface,
                           ),
                         ],
                       ),
                     ),
                   ),
-                  
                   const Divider(thickness: 1, height: 1),
                   AnimatedCrossFade(
                     duration: const Duration(milliseconds: 300),
-                    crossFadeState: _enderecoVisivel ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+                    crossFadeState: _enderecoVisivel
+                        ? CrossFadeState.showSecond
+                        : CrossFadeState.showFirst,
                     firstChild: Container(),
                     secondChild: Padding(
                       padding: const EdgeInsets.only(top: 16.0),
@@ -333,39 +369,42 @@ class _NovoClienteState extends State<NovoCliente> with MixinValidations {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Expanded(
-                                flex: 3, 
-                                child: _buildCampo('CEP', 
-                                  _cepController, 
-                                  focusNode: _cepFocusNode, 
-                                  keyboardType: TextInputType.number, 
+                                flex: 3,
+                                child: _buildCampo(
+                                  'CEP',
+                                  _cepController,
+                                  focusNode: _cepFocusNode,
+                                  keyboardType: TextInputType.number,
                                   inputFormatters: [_cepMask],
                                 ),
                               ),
                               const SizedBox(width: 8),
                               Expanded(
-                                flex: 1, 
-                                child: _buildCampo('UF', 
+                                flex: 1,
+                                child: _buildCampo(
+                                  'UF',
                                   _ufController,
                                 ),
                               ),
                             ],
                           ),
-
                           const SizedBox(height: 12),
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Expanded(
-                                flex: 3, 
-                                child: _buildCampo('Cidade', 
+                                flex: 3,
+                                child: _buildCampo(
+                                  'Cidade',
                                   _cidadeController,
                                 ),
                               ),
                               const SizedBox(width: 8),
                               Expanded(
-                                flex: 1, 
-                                child: _buildCampo('Nº', 
-                                  _numeroController, 
+                                flex: 1,
+                                child: _buildCampo(
+                                  'Nº',
+                                  _numeroController,
                                   keyboardType: TextInputType.number,
                                 ),
                               ),
@@ -373,10 +412,8 @@ class _NovoClienteState extends State<NovoCliente> with MixinValidations {
                           ),
                           const SizedBox(height: 12),
                           _buildCampo('Bairro', _bairroController),
-
                           const SizedBox(height: 12),
                           _buildCampo('Logradouro', _logradouroController),
-
                           const SizedBox(height: 12),
                           _buildCampo('Complemento', _complementoController),
                         ],
@@ -387,10 +424,12 @@ class _NovoClienteState extends State<NovoCliente> with MixinValidations {
                   ElevatedButton(
                     onPressed: _isLoading ? null : _salvarCliente,
                     style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15)),
-                    child: Text('Salvar Cliente',
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 50, vertical: 15)),
+                    child: Text(
+                      'Salvar Cliente',
                       style: GoogleFonts.inter(
-                        fontSize: 16, 
+                        fontSize: 16,
                       ),
                     ),
                   ),
@@ -404,7 +443,8 @@ class _NovoClienteState extends State<NovoCliente> with MixinValidations {
               color: Colors.black.withAlpha(102),
               child: const Center(
                 child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white), // Mantém branco para contraste com overlay
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                      Colors.white), // Mantém branco para contraste com overlay
                 ),
               ),
             ),

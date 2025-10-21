@@ -2,20 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-import '../a_core/widgets/header.dart';
-import '../b_models/venda_model.dart';
-import '../b_models/cliente_model.dart';
-import '../b_models/produto_model.dart';
-import '../c_controllers/controller_cliente.dart';
-import '../c_controllers/controller_produto.dart';
-import '../c_controllers/controller_venda.dart';
+import '../core/widgets/header.dart';
+import '../models/venda_model.dart';
+import '../models/cliente_model.dart';
+import '../models/produto_model.dart';
+import '../notifiers/controller_cliente.dart';
+import '../notifiers/controller_produto.dart';
+import '../notifiers/controller_venda.dart';
 
-import 'venda_produto_card.dart';
+import 'produto_card_venda.dart';
 
 class NovaVenda extends StatefulWidget {
   static const routeName = 'NovaVenda';
   const NovaVenda({super.key});
-  
+
   @override
   State<NovaVenda> createState() => _NovaVendaState();
 }
@@ -33,7 +33,14 @@ class _NovaVendaState extends State<NovaVenda> {
   final TextEditingController _clienteController = TextEditingController();
   Key _autocompleteKey = UniqueKey();
   final List<ProdutoForm> _produtos = [];
-  final List<String> _pagamento =  ['Crédito', 'Débito', 'Dinheiro', 'Pix', 'Boleto', 'A Prazo'];
+  final List<String> _pagamento = [
+    'Crédito',
+    'Débito',
+    'Dinheiro',
+    'Pix',
+    'Boleto',
+    'A Prazo'
+  ];
   String? _pagamentoSelecionado;
   bool _isLoading = false;
 
@@ -47,18 +54,21 @@ class _NovaVendaState extends State<NovaVenda> {
   void dispose() {
     _clienteController.dispose();
     super.dispose();
-  }  
+  }
 
   void _finalizarVenda() async {
     // Impede múltiplos cliques e valida o formulário
     if (!_formKey.currentState!.validate()) return;
     if (_isLoading) return;
 
-    final itensVendidos = _produtos.where((p) => p.valido).map((p) => ItemVendido(
-      nome: p.produto!.nome,
-      quantidade: p.quantidade,
-      precoUnitario: p.precoUnitario,
-    )).toList();
+    final itensVendidos = _produtos
+        .where((p) => p.valido)
+        .map((p) => ItemVendido(
+              nome: p.produto!.nome,
+              quantidade: p.quantidade,
+              precoUnitario: p.precoUnitario,
+            ))
+        .toList();
 
     if (itensVendidos.isEmpty) {
       // Mostra um aviso se não houver produtos válidos
@@ -81,8 +91,9 @@ class _NovaVendaState extends State<NovaVenda> {
         data: DateTime.now(),
         metodoPagamento: _pagamentoSelecionado,
       );
-      
-      await Provider.of<VendaController>(context, listen: false).adicionarVenda(venda);
+
+      await Provider.of<VendaController>(context, listen: false)
+          .adicionarVenda(venda);
 
       scaffoldMessenger.showSnackBar(
         SnackBar(
@@ -127,17 +138,20 @@ class _NovaVendaState extends State<NovaVenda> {
 
   double _calcularTotal() {
     return _produtos
-      .where((p) => p.valido)
-      .fold(0.0, (sum, p) => sum + (p.quantidade * p.precoUnitario));
+        .where((p) => p.valido)
+        .fold(0.0, (sum, p) => sum + (p.quantidade * p.precoUnitario));
   }
 
   @override
   Widget build(BuildContext context) {
-    final allProducts = Provider.of<ProdutoController>(context, listen: false).produtos;
-    final allClientes = Provider.of<ClienteController>(context, listen: false).clientes;
+    final allProducts =
+        Provider.of<ProdutoController>(context, listen: false).produtos;
+    final allClientes =
+        Provider.of<ClienteController>(context, listen: false).clientes;
 
     return Scaffold(
-      appBar: const CustomHeader(pageTitle: 'Nova Venda', showBackButton: false),
+      appBar:
+          const CustomHeader(pageTitle: 'Nova Venda', showBackButton: false),
       body: Form(
         key: _formKey,
         child: ListView(
@@ -148,11 +162,13 @@ class _NovaVendaState extends State<NovaVenda> {
               key: _autocompleteKey,
               displayStringForOption: (Cliente option) => option.nome,
               optionsBuilder: (TextEditingValue textEditingValue) {
-                _clienteController.text = textEditingValue.text; // Atualiza o controller externo com o texto digitado
+                _clienteController.text = textEditingValue
+                    .text; // Atualiza o controller externo com o texto digitado
                 if (textEditingValue.text.isEmpty) {
                   return const Iterable<Cliente>.empty();
                 }
-                return allClientes.where((Cliente cliente) { // Filtra a lista de clientes com base no que foi digitado
+                return allClientes.where((Cliente cliente) {
+                  // Filtra a lista de clientes com base no que foi digitado
                   final input = textEditingValue.text.toLowerCase();
                   final nome = cliente.nome.toLowerCase();
                   final apelido = cliente.apelido?.toLowerCase() ?? '';
@@ -161,22 +177,28 @@ class _NovaVendaState extends State<NovaVenda> {
               },
               onSelected: (Cliente selection) {
                 _clienteController.text = selection.nome;
-                FocusScope.of(context).unfocus(); // Esconde o teclado após a seleção
+                FocusScope.of(context)
+                    .unfocus(); // Esconde o teclado após a seleção
               },
-              fieldViewBuilder: (context, textEditingController, focusNode, onFieldSubmitted) {
+              fieldViewBuilder: (context, textEditingController, focusNode,
+                  onFieldSubmitted) {
                 return TextFormField(
-                  controller: textEditingController, // Usa o controller do Autocomplete
+                  controller:
+                      textEditingController, // Usa o controller do Autocomplete
                   focusNode: focusNode,
-                  decoration: const InputDecoration(labelText: '* Cliente', isDense: true),
-                  validator: (value) => value!.trim().isEmpty ? 'Informe um cliente!' : null,
+                  decoration: const InputDecoration(
+                      labelText: '* Cliente', isDense: true),
+                  validator: (value) =>
+                      value!.trim().isEmpty ? 'Informe um cliente!' : null,
                 );
               },
             ),
-            
+
             const SizedBox(height: 12),
             DropdownButtonFormField<String>(
               initialValue: _pagamentoSelecionado,
-              decoration: const InputDecoration(labelText: '* Método de pagamento', isDense: true),
+              decoration: const InputDecoration(
+                  labelText: '* Método de pagamento', isDense: true),
               items: _pagamento.map((String cor) {
                 return DropdownMenuItem<String>(
                   value: cor,
@@ -188,7 +210,8 @@ class _NovaVendaState extends State<NovaVenda> {
                   _pagamentoSelecionado = newValue;
                 });
               },
-              validator: (value) => value == null ? 'Selecione um método de pagamento!' : null,
+              validator: (value) =>
+                  value == null ? 'Selecione um método de pagamento!' : null,
             ),
 
             const SizedBox(height: 8),
@@ -202,7 +225,7 @@ class _NovaVendaState extends State<NovaVenda> {
                   allProducts: allProducts,
                   onRemoved: () => _removerProduto(index),
                   onChanged: (updatedForm) {
-                    setState(() { 
+                    setState(() {
                       _produtos[index] = updatedForm;
                     });
                   },
@@ -211,20 +234,21 @@ class _NovaVendaState extends State<NovaVenda> {
             ),
 
             const SizedBox(height: 12),
-            Text('Total: R\$ ${_calcularTotal().toStringAsFixed(2).replaceAll('.', ',')}',
+            Text(
+              'Total: R\$ ${_calcularTotal().toStringAsFixed(2).replaceAll('.', ',')}',
               style: GoogleFonts.inter(
-                fontWeight: FontWeight.w700, 
+                fontWeight: FontWeight.w700,
                 fontSize: 18,
               ),
             ),
 
             // Divider \\
-            Divider(thickness: 1.0, color: Theme.of(context).colorScheme.primary),
+            Divider(
+                thickness: 1.0, color: Theme.of(context).colorScheme.primary),
             Padding(
               padding: const EdgeInsets.only(top: 8, bottom: 24),
               child: Row(
                 children: [
-
                   // Botão Adicionar \\
                   Expanded(
                     child: OutlinedButton.icon(
@@ -242,14 +266,14 @@ class _NovaVendaState extends State<NovaVenda> {
                       onPressed: _isLoading ? null : _finalizarVenda,
                       icon: _isLoading ? Container() : const Icon(Icons.check),
                       label: _isLoading
-                        ? const SizedBox(
-                            height: 20,
-                            width: 20,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2.5,
-                              color: Colors.white,
-                            ))
-                        : const Text("Finalizar"),
+                          ? const SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2.5,
+                                color: Colors.white,
+                              ))
+                          : const Text("Finalizar"),
                     ),
                   ),
                 ],

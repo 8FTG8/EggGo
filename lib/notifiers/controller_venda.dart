@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../b_models/venda_model.dart';
-import '../f_services/service_venda.dart';
-import '../f_services/local_sql_service.dart';
+import '../models/venda_model.dart';
+import '../services/service_venda.dart';
+import '../services/local_sql_service.dart';
 import 'sincronizacao_controller.dart';
 
 class VendaController with ChangeNotifier {

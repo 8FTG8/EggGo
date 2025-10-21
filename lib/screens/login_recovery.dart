@@ -3,9 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../a_core/widgets/button_text.dart';
-import '../a_core/widgets/button_elevated.dart';
-import '../a_core/utils/validators.dart';
+import '../core/widgets/button_text.dart';
+import '../core/widgets/button_elevated.dart';
+import '../core/utils/validators.dart';
 
 class ForgotPassword extends StatefulWidget {
   const ForgotPassword({super.key});
@@ -33,9 +33,12 @@ class _ForgotPasswordState extends State<ForgotPassword> with MixinValidations {
     final navigator = Navigator.of(context);
 
     try {
-      await FirebaseAuth.instance.sendPasswordResetEmail(email: _emailController.text.trim());
+      await FirebaseAuth.instance
+          .sendPasswordResetEmail(email: _emailController.text.trim());
       scaffoldMessenger.showSnackBar(
-        SnackBar(content: Text('Link de recuperação enviado para ${_emailController.text.trim()}.')),
+        SnackBar(
+            content: Text(
+                'Link de recuperação enviado para ${_emailController.text.trim()}.')),
       );
       navigator.pop();
     } on FirebaseAuthException catch (e) {
@@ -47,7 +50,7 @@ class _ForgotPasswordState extends State<ForgotPassword> with MixinValidations {
     } catch (e) {
       scaffoldMessenger.showSnackBar(
         SnackBar(
-          content: Text('Erro inesperado: $e'), 
+          content: Text('Erro inesperado: $e'),
           backgroundColor: Theme.of(context).colorScheme.error,
         ),
       );
@@ -65,7 +68,8 @@ class _ForgotPasswordState extends State<ForgotPassword> with MixinValidations {
         borderRadius: BorderRadius.circular(12),
       ),
       title: Center(
-        child: Text('Esqueceu a senha?',
+        child: Text(
+          'Esqueceu a senha?',
           style: GoogleFonts.inter(
             fontSize: 24,
             fontWeight: FontWeight.bold,
@@ -81,7 +85,8 @@ class _ForgotPasswordState extends State<ForgotPassword> with MixinValidations {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text('Informe seu email e te enviaremos um link para redefinir sua senha.',
+              Text(
+                'Informe seu email e te enviaremos um link para redefinir sua senha.',
                 style: GoogleFonts.inter(
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
@@ -94,7 +99,8 @@ class _ForgotPasswordState extends State<ForgotPassword> with MixinValidations {
                 controller: _emailController,
                 titleText: 'Email',
                 hintText: 'Digite seu email',
-                validator: (v) => combineValidators([() => isEmpty(v), () => validateEmail(v)]),
+                validator: (v) => combineValidators(
+                    [() => isEmpty(v), () => validateEmail(v)]),
                 keyboardType: TextInputType.emailAddress,
               ),
               // ENVIAR EMAIL \\
@@ -105,7 +111,8 @@ class _ForgotPasswordState extends State<ForgotPassword> with MixinValidations {
                 height: 45,
                 backgroundColor: Theme.of(context).colorScheme.primary,
                 foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                child: Text('Enviar',
+                child: Text(
+                  'Enviar',
                   style: GoogleFonts.inter(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,

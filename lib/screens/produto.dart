@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'produto_add.dart';
 
-import '../a_core/widgets/header.dart';
-import '../b_models/produto_model.dart';
-import '../c_controllers/controller_produto.dart';
+import '../core/widgets/header.dart';
+import '../models/produto_model.dart';
+import '../notifiers/controller_produto.dart';
 
 class Produtos extends StatelessWidget {
   static const routeName = 'ProdutosPage';
@@ -30,7 +30,8 @@ class Produtos extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
-      appBar: CustomHeader(pageTitle: 'Produtos Cadastrados', showBackButton: true),
+      appBar:
+          CustomHeader(pageTitle: 'Produtos Cadastrados', showBackButton: true),
       body: Consumer<ProdutoController>(
         builder: (context, controller, child) {
           if (controller.isLoading && controller.produtos.isEmpty) {
@@ -46,24 +47,25 @@ class Produtos extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.symmetric(vertical: 2),
                   decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                        color: colorScheme.onSurface.withAlpha(102)))),
+                      border: Border(
+                          bottom: BorderSide(
+                              color: colorScheme.onSurface.withAlpha(102)))),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: const [
                       SizedBox(
-                        width: 60, 
-                        child: Text('Código', 
-                          style: TextStyle(fontWeight: FontWeight.bold))),
+                          width: 60,
+                          child: Text('Código',
+                              style: TextStyle(fontWeight: FontWeight.bold))),
                       Expanded(
-                        child: Text('Nome', 
-                          style: TextStyle(fontWeight: FontWeight.bold), 
-                          textAlign: TextAlign.center)),
+                          child: Text('Nome',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.center)),
                       SizedBox(
-                        width: 60, 
-                        child: Text('Dúzias', 
-                          style: TextStyle(fontWeight: FontWeight.bold), 
+                        width: 60,
+                        child: Text(
+                          'Dúzias',
+                          style: TextStyle(fontWeight: FontWeight.bold),
                           textAlign: TextAlign.right,
                         ),
                       ),
@@ -94,14 +96,18 @@ class Produtos extends StatelessWidget {
                             builder: (BuildContext context) {
                               return AlertDialog(
                                 title: const Text("Confirmar Exclusão"),
-                                content: Text("Tem certeza que deseja excluir o produto \"${produto.nome}\"?"),
+                                content: Text(
+                                    "Tem certeza que deseja excluir o produto \"${produto.nome}\"?"),
                                 actions: <Widget>[
                                   TextButton(
-                                    onPressed: () => Navigator.of(context).pop(false),
-                                    child: const Text("Cancelar")),
+                                      onPressed: () =>
+                                          Navigator.of(context).pop(false),
+                                      child: const Text("Cancelar")),
                                   TextButton(
-                                    style: TextButton.styleFrom(foregroundColor: colorScheme.error),
-                                    onPressed: () => Navigator.of(context).pop(true),
+                                    style: TextButton.styleFrom(
+                                        foregroundColor: colorScheme.error),
+                                    onPressed: () =>
+                                        Navigator.of(context).pop(true),
                                     child: const Text("Excluir"),
                                   ),
                                 ],
@@ -110,10 +116,12 @@ class Produtos extends StatelessWidget {
                           );
                         },
                         onDismissed: (direction) {
-                          Provider.of<ProdutoController>(context, listen: false).deletarProduto(produto.id);
+                          Provider.of<ProdutoController>(context, listen: false)
+                              .deletarProduto(produto.id);
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text('Produto "${produto.nome}" excluído.'),
+                              content:
+                                  Text('Produto "${produto.nome}" excluído.'),
                             ),
                           );
                         },
@@ -128,29 +136,36 @@ class Produtos extends StatelessWidget {
                             ),
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 8.0),
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 12.0, horizontal: 8.0),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 SizedBox(
                                   width: 50,
-                                  child: Text(produto.codigo,
+                                  child: Text(
+                                    produto.codigo,
                                     style: const TextStyle(
                                       fontWeight: FontWeight.w500,
                                     ),
                                   ),
                                 ),
                                 Expanded(
-                                  child: Text(produto.nome, 
-                                  textAlign: TextAlign.center,
+                                  child: Text(
+                                    produto.nome,
+                                    textAlign: TextAlign.center,
                                   ),
                                 ),
                                 SizedBox(
                                   width: 50,
                                   child: Text(
-                                    produto.duz.toStringAsFixed(2).replaceAll(RegExp(r'0*$'), '').replaceAll(RegExp(r'\.$'), ''),
+                                    produto.duz
+                                        .toStringAsFixed(2)
+                                        .replaceAll(RegExp(r'0*$'), '')
+                                        .replaceAll(RegExp(r'\.$'), ''),
                                     textAlign: TextAlign.right,
-                                    style: const TextStyle(fontWeight: FontWeight.w500),
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.w500),
                                   ),
                                 ),
                               ],

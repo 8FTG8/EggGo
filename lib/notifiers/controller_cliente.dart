@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
-import '../b_models/cliente_model.dart';
-import '../f_services/service_cliente.dart';
-import '../f_services/local_sql_service.dart';
+import '../models/cliente_model.dart';
+import '../services/service_cliente.dart';
+import '../services/local_sql_service.dart';
 import 'sincronizacao_controller.dart';
 
 class ClienteController with ChangeNotifier {

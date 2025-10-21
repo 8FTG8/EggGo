@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
-import '../b_models/venda_model.dart';
+import '../models/venda_model.dart';
 import 'local_sql_service.dart';
 
 abstract class VendaService {

@@ -4,7 +4,7 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 
-import '../../b_models/venda_model.dart';
+import '../../models/venda_model.dart';
 
 class PdfGenerator {
   static Future<void> gerarComprovanteVenda(Venda venda, PdfPageFormat pageFormat) async {

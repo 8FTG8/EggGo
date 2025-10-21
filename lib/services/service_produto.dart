@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'dart:async';
 
-import '../b_models/produto_model.dart';
+import '../models/produto_model.dart';
 import 'local_sql_service.dart';
 
 abstract class ProdutoService {

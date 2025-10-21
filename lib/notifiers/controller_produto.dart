@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
-import '../b_models/produto_model.dart';
-import '../f_services/service_produto.dart';
-import '../f_services/local_sql_service.dart';
+import '../models/produto_model.dart';
+import '../services/service_produto.dart';
+import '../services/local_sql_service.dart';
 import 'sincronizacao_controller.dart';
 
 class ProdutoController with ChangeNotifier {

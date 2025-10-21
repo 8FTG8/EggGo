@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import 'package:egg_go/a_core/widgets/button_elevated.dart';
-import 'package:egg_go/d_views/login_recovery.dart';
-import 'package:egg_go/a_core/utils/validators.dart';
+import '/core/widgets/button_elevated.dart';
+import 'login_recovery.dart';
+import '/core/utils/validators.dart';
 
 class Login extends StatefulWidget {
   static const routeName = 'LoginPage';
@@ -52,10 +52,12 @@ class _LoginState extends State<Login> with MixinValidations {
             errorMessage = 'O formato do e-mail é inválido.';
             break;
           case 'too-many-requests':
-            errorMessage = 'Muitas tentativas de login. Tente novamente mais tarde.';
+            errorMessage =
+                'Muitas tentativas de login. Tente novamente mais tarde.';
             break;
           case 'network-request-failed':
-            errorMessage = 'Erro de rede. Verifique sua conexão e tente novamente.';
+            errorMessage =
+                'Erro de rede. Verifique sua conexão e tente novamente.';
             break;
           case 'invalid-credential':
             errorMessage = 'E-mail ou senha incorreto(s).';
@@ -63,14 +65,14 @@ class _LoginState extends State<Login> with MixinValidations {
         }
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(errorMessage), 
+            content: Text(errorMessage),
             backgroundColor: Theme.of(context).colorScheme.error,
           ),
         );
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Ligue para o Felipe! Erro inesperado: $e'), 
+            content: Text('Ligue para o Felipe! Erro inesperado: $e'),
             backgroundColor: Theme.of(context).colorScheme.error,
           ),
         );
@@ -94,7 +96,8 @@ class _LoginState extends State<Login> with MixinValidations {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(height: MediaQuery.of(context).size.height * 0.15),
-                  Text('EggGo',
+                  Text(
+                    'EggGo',
                     style: GoogleFonts.inter(
                       fontSize: 60,
                       fontWeight: FontWeight.bold,
@@ -125,8 +128,13 @@ class _LoginState extends State<Login> with MixinValidations {
                         padding: const EdgeInsets.symmetric(horizontal: 8.0),
                         child: IconButton(
                           icon: Icon(
-                            _obscureText ? Icons.visibility_off_outlined : Icons.visibility_outlined,
-                            color: Theme.of(context).colorScheme.onSurface.withAlpha(153), // Opacidade de 0.6
+                            _obscureText
+                                ? Icons.visibility_off_outlined
+                                : Icons.visibility_outlined,
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSurface
+                                .withAlpha(153), // Opacidade de 0.6
                             semanticLabel: 'Mostrar ou ocultar senha',
                           ),
                           onPressed: () {
@@ -149,7 +157,8 @@ class _LoginState extends State<Login> with MixinValidations {
                     backgroundColor: Theme.of(context).colorScheme.primary,
                     foregroundColor: Theme.of(context).colorScheme.onPrimary,
                     borderRadius: BorderRadius.circular(12),
-                    child: Text('Entrar',
+                    child: Text(
+                      'Entrar',
                       style: GoogleFonts.inter(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -164,16 +173,18 @@ class _LoginState extends State<Login> with MixinValidations {
                   TextButton(
                     onPressed: () {
                       showDialog(
-                        context: context,
-                        builder: (context) => ForgotPassword());
+                          context: context,
+                          builder: (context) => ForgotPassword());
                     },
-                    child: Text('Esqueceu a senha?',
+                    child: Text(
+                      'Esqueceu a senha?',
                       style: GoogleFonts.inter(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
                         color: Theme.of(context).colorScheme.secondary,
                         decoration: TextDecoration.underline,
-                        decorationColor: Theme.of(context).colorScheme.secondary,
+                        decorationColor:
+                            Theme.of(context).colorScheme.secondary,
                       ),
                     ),
                   ),
@@ -216,7 +227,8 @@ class _LoginState extends State<Login> with MixinValidations {
                 color: Colors.black.withAlpha(77),
                 child: Center(
                   child: CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).colorScheme.onPrimary),
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                        Theme.of(context).colorScheme.onPrimary),
                   ),
                 ),
               ),
