@@ -9,7 +9,6 @@ class AppTheme {
   static const _lightColorScheme = ColorScheme(
     brightness: Brightness.light,
     primary: Color(0xFFDD5C01),
-    //primary: Color(0xFFC85400),       // Laranja escurecido
     onPrimary: Colors.white,        
     secondary: Color(0xFF1E5E2D),
     onSecondary: Colors.white,

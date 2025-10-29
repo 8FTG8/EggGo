@@ -125,15 +125,9 @@ class _NovoClienteState extends State<NovoCliente> with MixinValidations {
       apelido: _apelidoController.text.nullIfEmpty,
       email: _emailController.text.nullIfEmpty,
       telefone: _telefoneController.text.nullIfEmpty,
-      cpf: _tipoPessoa == TipoPessoa.fisica
-          ? _cpfController.text.nullIfEmpty
-          : null,
-      cnpj: _tipoPessoa == TipoPessoa.juridica
-          ? _cnpjController.text.nullIfEmpty
-          : null,
-      inscricaoEstadual: _tipoPessoa == TipoPessoa.juridica
-          ? _ieController.text.nullIfEmpty
-          : null,
+      cpf: _tipoPessoa == TipoPessoa.fisica ? _cpfController.text.nullIfEmpty : null,
+      cnpj: _tipoPessoa == TipoPessoa.juridica ? _cnpjController.text.nullIfEmpty : null,
+      inscricaoEstadual: _tipoPessoa == TipoPessoa.juridica ? _ieController.text.nullIfEmpty : null,
       cep: _cepController.text.nullIfEmpty,
       logradouro: _logradouroController.text.nullIfEmpty,
       numero: _numeroController.text.nullIfEmpty,

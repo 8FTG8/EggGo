@@ -4,10 +4,12 @@
 android/app/google-services.json
 
 # Configuração do Firebase gerada pelo FlutterFire CLI
-lib/a_core/firebase/firebase_options.dart
+lib/core/firebase/
 
 # Cache e configurações locais do Firebase CLI
 /.firebase/
+
+# -------------------------------------- #
 
 # Miscellaneous
 *.class
