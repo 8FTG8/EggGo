@@ -310,7 +310,7 @@ class _NovoClienteState extends State<NovoCliente> with MixinValidations {
                     ),
                   if (_tipoPessoa == TipoPessoa.juridica) ...[
                     _buildCampo(
-                      '* CNPJ',
+                      'CNPJ',
                       _cnpjController,
                       keyboardType: TextInputType.number,
                       inputFormatters: [_cnpjMask],
