@@ -37,19 +37,19 @@ https://github.com/user-attachments/assets/6b3292db-be0c-49f2-bbcb-1d1cccc907ea
 
 O projeto está estruturado seguindo uma arquitetura semelhante à **MVC (Model-View-Controller)**, adaptada para o ecossistema Flutter com o auxílio do pacote `provider`.
 
-*   **Model (`/lib/models`):**
+*   **Models (`/lib/models`):**
     *   Representa os dados e a lógica de negócio da aplicação.
     *   São classes "puras" em Dart que definem a estrutura dos objetos de dados.
 
-*   **View (`/lib/views`):**
+*   **Screens (`/lib/screens`):**
     *   É a camada de interface do usuário (UI). Sua responsabilidade é exibir os dados para o usuário e capturar suas interações.
     *   A View não contém lógica de negócio; ela apenas reage às mudanças de estado e notifica o Controller sobre as ações do usuário.
 
-*   **Controller (`/lib/controllers`):**
+*   **Notifiers (`/lib/notifiers`):**
     *   Atua como uma ponte entre o Model e a View.
     *   Recebe as ações do usuário (vindas da View), processa-as, atualiza o Model e notifica a View (através do `Provider`) para que ela se reconstrua e exiba os dados atualizados.
 
-*   **Service (`/lib/services`):**
+*   **Services (`/lib/services`):**
     *   Abstrai a origem dos dados (banco de dados local, API remota, etc.).
     *   Sua responsabilidade é lidar com toda a comunicação com as fontes de dados (operações CRUD).
     *   Os Controllers dependem de uma abstração do serviço (classe abstrata), permitindo trocar a fonte de dados (ex: de Firebase para outra API) sem alterar a lógica do Controller.
@@ -66,9 +66,9 @@ app_egggo/
     │
     ├── models/
     │
-    ├── controllers/
+    ├── notifiers/
     │
-    ├── views/
+    ├── screens/
     │
     ├── services/
     │
