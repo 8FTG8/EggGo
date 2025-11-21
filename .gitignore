@@ -1,5 +1,3 @@
-# === ARQUIVOS SENSÍVEIS DO FIREBASE === #
-
 # Configuração do Firebase para Android
 android/app/google-services.json
 
@@ -9,7 +7,8 @@ lib/core/firebase/
 # Cache e configurações locais do Firebase CLI
 /.firebase/
 
-# -------------------------------------- #
+# Arquivo de instruções para build e apk
+TOBUILD.md
 
 # Miscellaneous
 *.class

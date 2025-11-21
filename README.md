@@ -74,7 +74,6 @@ app_egggo/
     │
     ├── app.dart
     └── main.dart
-
     
 ```
 

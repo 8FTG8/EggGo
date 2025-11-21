@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import '../models/cliente_model.dart';
 import '../services/service_cliente.dart';
 import '../services/local_sql_service.dart';
-import 'sincronizacao_controller.dart';
+import 'controller_sincronizacao.dart';
 
 class ClienteController with ChangeNotifier {
   final SincronizacaoController _sincronizacaoController;

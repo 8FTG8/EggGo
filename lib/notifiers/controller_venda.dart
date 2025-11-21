@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../models/venda_model.dart';
 import '../services/service_venda.dart';
 import '../services/local_sql_service.dart';
-import 'sincronizacao_controller.dart';
+import 'controller_sincronizacao.dart';
 
 class VendaController with ChangeNotifier {
   final SincronizacaoController _sincronizacaoController;

@@ -15,7 +15,7 @@ import 'notifiers/controller_cliente.dart';
 import 'notifiers/controller_produto.dart';
 import 'notifiers/controller_venda.dart';
 import 'notifiers/theme_controller.dart';
-import 'notifiers/sincronizacao_controller.dart';
+import 'notifiers/controller_sincronizacao.dart';
 
 // Views -> Telas de usuário
 import 'screens/sincronizacao.dart';
