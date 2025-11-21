@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
-import '../notifiers/sincronizacao_controller.dart';
+import '../notifiers/controller_sincronizacao.dart';
 import '../core/widgets/header.dart';
 
 class Sincronizacao extends StatelessWidget {

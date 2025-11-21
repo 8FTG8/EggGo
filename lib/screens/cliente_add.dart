@@ -314,8 +314,7 @@ class _NovoClienteState extends State<NovoCliente> with MixinValidations {
                       _cnpjController,
                       keyboardType: TextInputType.number,
                       inputFormatters: [_cnpjMask],
-                      validator: (v) => combineValidators(
-                          [() => isEmpty(v), () => validateCNPJ(v)]),
+                      validator: (v) => validateCNPJ(v),
                     ),
                     const SizedBox(height: 12),
                     _buildCampo('Inscrição Estadual', _ieController),

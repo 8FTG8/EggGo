@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../core/widgets/bottom_bar.dart';
 import '../core/widgets/button_elevated.dart';
-import '../notifiers/sincronizacao_controller.dart';
+import '../notifiers/controller_sincronizacao.dart';
 import '../notifiers/theme_controller.dart';
 import 'settings.dart';
 import 'cliente.dart';

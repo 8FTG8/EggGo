@@ -97,11 +97,13 @@ class _ProdutoCardState extends State<ProdutoCard> {
                     decoration: const InputDecoration(
                         labelText: '* Nome do produto', isDense: true),
                     validator: (value) {
-                      if (widget.produtoForm.produto == null)
+                      if (widget.produtoForm.produto == null) {
                         return 'Selecione um produto válido!';
+                      }
                       if (value !=
-                          _displayStringForOption(widget.produtoForm.produto!))
+                          _displayStringForOption(widget.produtoForm.produto!)) {
                         return 'Selecione um item da lista';
+                      }
                       return null;
                     },
                   );
