@@ -7,9 +7,6 @@ lib/core/firebase/
 # Cache e configurações locais do Firebase CLI
 /.firebase/
 
-# Arquivo de instruções para build e apk
-TOBUILD.md
-
 # Miscellaneous
 *.class
 *.log
